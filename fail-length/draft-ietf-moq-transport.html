@@ -9,6 +9,7 @@
 <meta content="Kirill Pugin" name="author">
 <meta content="Suhas Nandakumar" name="author">
 <meta content="Victor Vasiliev" name="author">
+<meta content="Ian Swett" name="author">
 <meta content="
        This document defines the core behavior for Media over QUIC Transport
 (MOQT), a media transport protocol designed to operate over QUIC and
@@ -1060,7 +1061,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="authors">
 <div class="author">
       <div class="author-name">L. Curley</div>
-<div class="org">Twitch</div>
+<div class="org">Discord</div>
 </div>
 <div class="author">
       <div class="author-name">K. Pugin</div>
@@ -1072,6 +1073,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </div>
 <div class="author">
       <div class="author-name">V. Vasiliev</div>
+<div class="org">Google</div>
+</div>
+<div class="author">
+      <div class="author-name">I. Swett, <span class="editor">Ed.</span>
+</div>
 <div class="org">Google</div>
 </div>
 </dd>
@@ -1816,6 +1822,10 @@ code, as defined below:<a href="#section-3.5-2" class="pilcrow">¶</a></p>
             </tr>
             <tr>
               <td class="text-right" rowspan="1" colspan="1">0x4</td>
+              <td class="text-left" rowspan="1" colspan="1">Duplicate Track Alias</td>
+            </tr>
+            <tr>
+              <td class="text-right" rowspan="1" colspan="1">0x5</td>
               <td class="text-left" rowspan="1" colspan="1">Parameter Length Mismatch</td>
             </tr>
             <tr>
@@ -1840,9 +1850,13 @@ code, as defined below:<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 disallowed by the specification.<a href="#section-3.5-4.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.5-4.5">
-            <p id="section-3.5-4.5.1">GOAWAY Timeout: The session was closed because the client took too long to
+            <p id="section-3.5-4.5.1">Duplicate Track Alias: The endpoint attempted to use a Track Alias
+that was already in use.<a href="#section-3.5-4.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.5-4.6">
+            <p id="section-3.5-4.6.1">GOAWAY Timeout: The session was closed because the client took too long to
 close the session in response to a GOAWAY (<a href="#message-goaway" class="auto internal xref">Section 6.14</a>) message.
-See session migration (<a href="#session-migration" class="auto internal xref">Section 3.6</a>).<a href="#section-3.5-4.5.1" class="pilcrow">¶</a></p>
+See session migration (<a href="#session-migration" class="auto internal xref">Section 3.6</a>).<a href="#section-3.5-4.6.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2423,8 +2437,8 @@ OBJECT Message {
 </div>
 <ul class="normal">
 <li class="normal" id="section-6.3-4.1">
-            <p id="section-6.3-4.1.1">Track Alias : The compressed full track name obtained as part of
-subscription and/or publish control message exchanges.<a href="#section-6.3-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-6.3-4.1.1">Track Alias :The track identifier as specified in the
+SUBSCRIBE message <a href="#message-subscribe-req" class="auto internal xref">Section 6.4</a>.<a href="#section-6.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.3-4.2">
             <p id="section-6.3-4.2.1">Group ID : The object is a member of the indicated group ID
@@ -2507,6 +2521,7 @@ RelativeNext Value:                               0    1  ...
 <pre>
 SUBSCRIBE Message {
   Subscribe ID (i),
+  Track Alias (i),
   Track Namespace (b),
   Track Name (b),
   StartGroup (Location),
@@ -2523,39 +2538,46 @@ SUBSCRIBE Message {
 </div>
 <ul class="normal">
 <li class="normal" id="section-6.4.2-3.1">
-              <p id="section-6.4.2-3.1.1">Track Namespace: Identifies the namespace of the track as defined in
-(<a href="#track-name" class="auto internal xref">Section 2.3.1</a>).<a href="#section-6.4.2-3.1.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.4.2-3.2">
-              <p id="section-6.4.2-3.2.1">Track Name: Identifies the track name as defined in (<a href="#track-name" class="auto internal xref">Section 2.3.1</a>).<a href="#section-6.4.2-3.2.1" class="pilcrow">¶</a></p>
-</li>
-            <li class="normal" id="section-6.4.2-3.3">
-              <p id="section-6.4.2-3.3.1">Subscribe ID: The subscription identifier that is unique within the session.
+              <p id="section-6.4.2-3.1.1">Subscribe ID: The subscription identifier that is unique within the session.
 <code>Subscribe ID</code> is a monotonically increasing variable length integer which
 <span class="bcp14">MUST</span> not be reused within a session. <code>Subscribe ID</code> is used by subscribers and
 the publishers to identify a given subscription. Subscribers specify the
 <code>Subscribe ID</code> and it is included in the corresponding SUBSCRIBE_OK or
-SUBSCRIBE_ERROR messages.<a href="#section-6.4.2-3.3.1" class="pilcrow">¶</a></p>
+SUBSCRIBE_ERROR messages.<a href="#section-6.4.2-3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.4.2-3.2">
+              <p id="section-6.4.2-3.2.1">Track Alias: A session specific identifier for the track.
+Messages that reference a track, such as OBJECT (<a href="#message-object" class="auto internal xref">Section 6.3</a>),
+reference this Track Alias instead of the Track Name and Track Namespace to
+reduce overhead. If the Track Alias is already in use, the publisher <span class="bcp14">MUST</span>
+close the session with a Duplicate Track Alias error (<a href="#session-termination" class="auto internal xref">Section 3.5</a>).<a href="#section-6.4.2-3.2.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.4.2-3.3">
+              <p id="section-6.4.2-3.3.1">Track Namespace: Identifies the namespace of the track as defined in
+(<a href="#track-name" class="auto internal xref">Section 2.3.1</a>).<a href="#section-6.4.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.4.2-3.4">
-              <p id="section-6.4.2-3.4.1">StartGroup: The Location of the requested group.  StartGroup's Mode <span class="bcp14">MUST NOT</span> be
-None.<a href="#section-6.4.2-3.4.1" class="pilcrow">¶</a></p>
+              <p id="section-6.4.2-3.4.1">Track Name: Identifies the track name as defined in (<a href="#track-name" class="auto internal xref">Section 2.3.1</a>).<a href="#section-6.4.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.4.2-3.5">
-              <p id="section-6.4.2-3.5.1">StartObject: The Location of the requested object.  StartObject's Mode <span class="bcp14">MUST NOT</span>
-be None.<a href="#section-6.4.2-3.5.1" class="pilcrow">¶</a></p>
+              <p id="section-6.4.2-3.5.1">StartGroup: The Location of the requested group.  StartGroup's Mode <span class="bcp14">MUST NOT</span> be
+None.<a href="#section-6.4.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.4.2-3.6">
-              <p id="section-6.4.2-3.6.1">EndGroup: The last Group requested in the subscription, inclusive.  EndGroup's
-Mode is None for an open-ended subscription.<a href="#section-6.4.2-3.6.1" class="pilcrow">¶</a></p>
+              <p id="section-6.4.2-3.6.1">StartObject: The Location of the requested object.  StartObject's Mode <span class="bcp14">MUST NOT</span>
+be None.<a href="#section-6.4.2-3.6.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.4.2-3.7">
-              <p id="section-6.4.2-3.7.1">EndObject: The last Object requested in the subscription, exclusive.
-EndObject's Mode <span class="bcp14">MUST</span> be None if EndGroup's Mode is None.  EndObject's Mode <span class="bcp14">MUST NOT</span> be None if EndGroup's Mode is not None.<a href="#section-6.4.2-3.7.1" class="pilcrow">¶</a></p>
+              <p id="section-6.4.2-3.7.1">EndGroup: The last Group requested in the subscription, inclusive.  EndGroup's
+Mode is None for an open-ended subscription.<a href="#section-6.4.2-3.7.1" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-6.4.2-3.8">
-              <p id="section-6.4.2-3.8.1">Track Request Parameters: The parameters are defined in
-<a href="#version-specific-params" class="auto internal xref">Section 6.1.1</a><a href="#section-6.4.2-3.8.1" class="pilcrow">¶</a></p>
+              <p id="section-6.4.2-3.8.1">EndObject: The last Object requested in the subscription, exclusive.
+EndObject's Mode <span class="bcp14">MUST</span> be None if EndGroup's Mode is None.  EndObject's Mode <span class="bcp14">MUST NOT</span> be None if EndGroup's Mode is not None.<a href="#section-6.4.2-3.8.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-6.4.2-3.9">
+              <p id="section-6.4.2-3.9.1">Track Request Parameters: The parameters are defined in
+<a href="#version-specific-params" class="auto internal xref">Section 6.1.1</a><a href="#section-6.4.2-3.9.1" class="pilcrow">¶</a></p>
 </li>
           </ul>
 <p id="section-6.4.2-4">On successful subscription, the publisher <span class="bcp14">SHOULD</span> start delivering
@@ -2641,9 +2663,6 @@ End = Group 3, Object &lt;last&gt;
 SUBSCRIBE_OK
 {
   Subscribe ID (i),
-  Track Namespace (b),
-  Track Name (b),
-  Track Alias (i),
   Expires (i)
 }
 </pre>
@@ -2664,15 +2683,9 @@ SUBSCRIBE_OK
             <p id="section-6.5-3.3.1">Track Name: Identifies the track name as defined in (<a href="#track-name" class="auto internal xref">Section 2.3.1</a>).<a href="#section-6.5-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.5-3.4">
-            <p id="section-6.5-3.4.1">Track Alias: Session specific identifier that is used as an alias for the
-Full Track Name in the Track Alias field of the OBJECT (<a href="#message-object" class="auto internal xref">Section 6.3</a>)
-message headers of the requested track. Track Aliases are shorter
-than Full Track Names and thus reduce the overhead in OBJECT messages.<a href="#section-6.5-3.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.5-3.5">
-            <p id="section-6.5-3.5.1">Expires: Time in milliseconds after which the subscription is no
+            <p id="section-6.5-3.4.1">Expires: Time in milliseconds after which the subscription is no
 longer valid. A value of 0 indicates that the subscription stays active
-until it is explicitly unsubscribed.<a href="#section-6.5-3.5.1" class="pilcrow">¶</a></p>
+until it is explicitly unsubscribed.<a href="#section-6.5-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -2693,6 +2706,7 @@ SUBSCRIBE_ERROR
   Subscribe ID (i),
   Error Code (i),
   Reason Phrase (b),
+  Track Alias (i),
 }
 </pre>
 </div>
@@ -2708,10 +2722,14 @@ SUBSCRIBE_ERROR
             <p id="section-6.6-3.2.1">Error Code: Identifies an integer error code for subscription failure.<a href="#section-6.6-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.6-3.3">
-            <p id="section-6.6-3.3.1">Reason Phrase Length: The length in bytes of the reason phrase.<a href="#section-6.6-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-6.6-3.3.1">Reason Phrase: Provides the reason for subscription error.<a href="#section-6.6-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-6.6-3.4">
-            <p id="section-6.6-3.4.1">Reason Phrase: Provides the reason for subscription error.<a href="#section-6.6-3.4.1" class="pilcrow">¶</a></p>
+            <p id="section-6.6-3.4.1">Track Alias: When Error Code is TBD, the subscriber <span class="bcp14">SHOULD</span> re-issue the
+SUBSCRIBE with this Track Alias instead. If this Track Alias is already in use,
+the receiver <span class="bcp14">MUST</span> close the connection with a Duplicate Track Alias error
+(<a href="#session-termination" class="auto internal xref">Section 3.5</a>).
+TODO: Add a registry for subscribe error codes and make this field conditional.<a href="#section-6.6-3.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3169,7 +3187,7 @@ leading varint in catalog track objects.<a href="#section-8-4" class="pilcrow">�
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Luke Curley</span></div>
-<div dir="auto" class="left"><span class="org">Twitch</span></div>
+<div dir="auto" class="left"><span class="org">Discord</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:kixelated@gmail.com" class="email">kixelated@gmail.com</a>
@@ -3197,6 +3215,14 @@ leading varint in catalog track objects.<a href="#section-8-4" class="pilcrow">�
 <div class="email">
 <span>Email:</span>
 <a href="mailto:vasilvv@google.com" class="email">vasilvv@google.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Ian Swett (<span class="role">editor</span>)</span></div>
+<div dir="auto" class="left"><span class="org">Google</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:ianswett@google.com" class="email">ianswett@google.com</a>
 </div>
 </address>
 </section>
