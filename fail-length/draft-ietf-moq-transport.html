@@ -1815,6 +1815,10 @@ code, as defined below:<a href="#section-3.5-2" class="pilcrow">¶</a></p>
               <td class="text-left" rowspan="1" colspan="1">Protocol Violation</td>
             </tr>
             <tr>
+              <td class="text-right" rowspan="1" colspan="1">0x4</td>
+              <td class="text-left" rowspan="1" colspan="1">Parameter Length Mismatch</td>
+            </tr>
+            <tr>
               <td class="text-right" rowspan="1" colspan="1">0x10</td>
               <td class="text-left" rowspan="1" colspan="1">GOAWAY Timeout</td>
             </tr>
@@ -2246,7 +2250,7 @@ of the Parameter Value field in bytes.<a href="#section-6.1-8" class="pilcrow">�
 <p id="section-6.1-9">Each parameter description will indicate the data type in the Parameter Value
 field. If a receiver understands a parameter type, and the parameter length
 implied by that type does not match the Parameter Length field, the receiver <span class="bcp14">MUST</span>
-terminate the session with error code TBD.<a href="#section-6.1-9" class="pilcrow">¶</a></p>
+terminate the session with error code 'Parameter Length Mismatch'.<a href="#section-6.1-9" class="pilcrow">¶</a></p>
 <div id="version-specific-params">
 <section id="section-6.1.1">
           <h4 id="name-version-specific-parameters">

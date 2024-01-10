@@ -454,21 +454,23 @@ Table of Contents
    The application MAY use any error message and SHOULD use a relevant
    code, as defined below:
 
-                       +======+====================+
-                       | Code | Reason             |
-                       +======+====================+
-                       |  0x0 | No Error           |
-                       +------+--------------------+
-                       |  0x1 | Generic Error      |
-                       +------+--------------------+
-                       |  0x2 | Unauthorized       |
-                       +------+--------------------+
-                       |  0x3 | Protocol Violation |
-                       +------+--------------------+
-                       | 0x10 | GOAWAY Timeout     |
-                       +------+--------------------+
+                   +======+===========================+
+                   | Code | Reason                    |
+                   +======+===========================+
+                   |  0x0 | No Error                  |
+                   +------+---------------------------+
+                   |  0x1 | Generic Error             |
+                   +------+---------------------------+
+                   |  0x2 | Unauthorized              |
+                   +------+---------------------------+
+                   |  0x3 | Protocol Violation        |
+                   +------+---------------------------+
+                   |  0x4 | Parameter Length Mismatch |
+                   +------+---------------------------+
+                   | 0x10 | GOAWAY Timeout            |
+                   +------+---------------------------+
 
-                                  Table 1
+                                 Table 1
 
    *  No Error: The session is being terminated without an error.
 
@@ -804,7 +806,7 @@ Table of Contents
    Parameter Value field.  If a receiver understands a parameter type,
    and the parameter length implied by that type does not match the
    Parameter Length field, the receiver MUST terminate the session with
-   error code TBD.
+   error code 'Parameter Length Mismatch'.
 
 6.1.1.  Version Specific Parameters
 
