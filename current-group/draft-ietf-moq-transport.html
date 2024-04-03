@@ -1347,10 +1347,10 @@ networks and is designed for high scale and low latency distribution.<a href="#s
                 <p id="section-toc.1-1.6.2.13.1"><a href="#section-6.13" class="auto internal xref">6.13</a>. <a href="#name-announce_cancel" class="internal xref">ANNOUNCE_CANCEL</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.14">
-                <p id="section-toc.1-1.6.2.14.1"><a href="#section-6.14" class="auto internal xref">6.14</a>. <a href="#name-get_current_group" class="internal xref">GET_CURRENT_GROUP</a></p>
+                <p id="section-toc.1-1.6.2.14.1"><a href="#section-6.14" class="auto internal xref">6.14</a>. <a href="#name-track_status_request" class="internal xref">TRACK_STATUS_REQUEST</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.15">
-                <p id="section-toc.1-1.6.2.15.1"><a href="#section-6.15" class="auto internal xref">6.15</a>. <a href="#name-current_group" class="internal xref">CURRENT_GROUP</a></p>
+                <p id="section-toc.1-1.6.2.15.1"><a href="#section-6.15" class="auto internal xref">6.15</a>. <a href="#name-track_status" class="internal xref">TRACK_STATUS</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.16">
                 <p id="section-toc.1-1.6.2.16.1"><a href="#section-6.16" class="auto internal xref">6.16</a>. <a href="#name-goaway" class="internal xref">GOAWAY</a></p>
@@ -2364,11 +2364,11 @@ MOQT Message {
           </tr>
           <tr>
             <td class="text-right" rowspan="1" colspan="1">0xD</td>
-            <td class="text-left" rowspan="1" colspan="1">GET_CURRENT_GROUP (<a href="#message-get-current-group" class="auto internal xref">Section 6.14</a>)</td>
+            <td class="text-left" rowspan="1" colspan="1">TRACK_STATUS_REQUEST (<a href="#message-track-status-req" class="auto internal xref">Section 6.14</a>)</td>
           </tr>
           <tr>
             <td class="text-right" rowspan="1" colspan="1">0xE</td>
-            <td class="text-left" rowspan="1" colspan="1">CURRENT_GROUP (<a href="#message-current-group" class="auto internal xref">Section 6.15</a>)</td>
+            <td class="text-left" rowspan="1" colspan="1">TRACK_STATUS (<a href="#message-track-status" class="auto internal xref">Section 6.15</a>)</td>
           </tr>
           <tr>
             <td class="text-right" rowspan="1" colspan="1">0x10</td>
@@ -3392,73 +3392,79 @@ ANNOUNCE_CANCEL Message {
         </ul>
 </section>
 </div>
-<div id="message-get-current-group">
+<div id="message-track-status-req">
 <section id="section-6.14">
-        <h3 id="name-get_current_group">
-<a href="#section-6.14" class="section-number selfRef">6.14. </a><a href="#name-get_current_group" class="section-name selfRef">GET_CURRENT_GROUP</a>
+        <h3 id="name-track_status_request">
+<a href="#section-6.14" class="section-number selfRef">6.14. </a><a href="#name-track_status_request" class="section-name selfRef">TRACK_STATUS_REQUEST</a>
         </h3>
-<p id="section-6.14-1">A potential subscriber sends a 'GET_CURRENT_GROUP' message on the control
+<p id="section-6.14-1">A potential subscriber sends a 'TRACK_INFO_REQUEST' message on the control
  stream to obtain the current group ID for a given track.<a href="#section-6.14-1" class="pilcrow">¶</a></p>
-<span id="name-moqt-get_current_group-mess"></span><div id="moq-get-current-group-format">
+<span id="name-moqt-track_status_request-m"></span><div id="moq-track-status-request-format">
 <figure id="figure-21">
           <div class="alignLeft art-text artwork" id="section-6.14-2.1">
 <pre>
-GET_CURRENT_GROUP Message {
+TRACK_STATUS_REQUEST Message {
   Track Namespace (b),
   Track Name (b),
 }
 </pre>
 </div>
 <figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
-<a href="#name-moqt-get_current_group-mess" class="selfRef">MOQT GET_CURRENT_GROUP Message</a>
+<a href="#name-moqt-track_status_request-m" class="selfRef">MOQT TRACK_STATUS_REQUEST Message</a>
           </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="message-current-group">
+<div id="message-track-status">
 <section id="section-6.15">
-        <h3 id="name-current_group">
-<a href="#section-6.15" class="section-number selfRef">6.15. </a><a href="#name-current_group" class="section-name selfRef">CURRENT_GROUP</a>
+        <h3 id="name-track_status">
+<a href="#section-6.15" class="section-number selfRef">6.15. </a><a href="#name-track_status" class="section-name selfRef">TRACK_STATUS</a>
         </h3>
-<p id="section-6.15-1">An endpoint sends a 'CURRENT_GROUP' message on the control stream in response
-to a GET_CURRENT_GROUP message.<a href="#section-6.15-1" class="pilcrow">¶</a></p>
-<span id="name-moqt-current_group-message"></span><div id="moq-current-group-format">
+<p id="section-6.15-1">An endpoint sends a 'TRACK_STATUS' message on the control stream in response
+to a TRACK_STATUS_REQUEST message.<a href="#section-6.15-1" class="pilcrow">¶</a></p>
+<span id="name-moqt-track_status-message"></span><div id="moq-track-status-format">
 <figure id="figure-22">
           <div class="alignLeft art-text artwork" id="section-6.15-2.1">
 <pre>
-CURRENT_GROUP Message {
+TRACK_STATUS Message {
   Track Namespace (b),
   Track Name (b),
   Status Code (i),
-  Current Group ID (i),
+  Last Group ID (i),
+  Last Object ID (i),
 }
 </pre>
 </div>
 <figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
-<a href="#name-moqt-current_group-message" class="selfRef">MOQT CURRENT_GROUP Message</a>
+<a href="#name-moqt-track_status-message" class="selfRef">MOQT TRACK_STATUS Message</a>
           </figcaption></figure>
 </div>
 <p id="section-6.15-3">The 'Status Code' field provides additional information about the status of the
 track. It <span class="bcp14">MUST</span> hold one of the following values. Any other value is a malformed
 message.<a href="#section-6.15-3" class="pilcrow">¶</a></p>
-<p id="section-6.15-4">0x00: The track is in progress, and the 'Current Group ID' field contains the
-highest group ID known to the sender for that track.<a href="#section-6.15-4" class="pilcrow">¶</a></p>
-<p id="section-6.15-5">0x01: The track does not exist. The 'Current Group ID' field <span class="bcp14">MUST</span> be zero, and
-any other value is a malformed message.<a href="#section-6.15-5" class="pilcrow">¶</a></p>
-<p id="section-6.15-6">0x02: The track has not yet begun. The 'Current Group ID' field <span class="bcp14">MUST</span> be zero in
-this case. Any other value is a malformed message.<a href="#section-6.15-6" class="pilcrow">¶</a></p>
-<p id="section-6.15-7">0x03: The track has finished, so there is no "live edge." The 'Current Group ID'
-field represents the highest Group ID known to the sender.<a href="#section-6.15-7" class="pilcrow">¶</a></p>
-<p id="section-6.15-8">0x04: The sender is a relay that cannot obtain the current group ID from the
-publisher. The 'Current Group ID' field contains the largest group ID known to
+<p id="section-6.15-4">0x00: The track is in progress, and subsequent fields contain the highest group
+and object ID known to the sender for that track.<a href="#section-6.15-4" class="pilcrow">¶</a></p>
+<p id="section-6.15-5">0x01: The track does not exist. Subsequent fields <span class="bcp14">MUST</span> be zero, and any other
+value is a malformed message.<a href="#section-6.15-5" class="pilcrow">¶</a></p>
+<p id="section-6.15-6">0x02: The track has not yet begun. Subsequent fields <span class="bcp14">MUST</span> be zero. Any other
+value is a malformed message.<a href="#section-6.15-6" class="pilcrow">¶</a></p>
+<p id="section-6.15-7">0x03: The track has finished, so there is no "live edge." Subsequent fields
+contain the highest Group and object ID known to the sender.<a href="#section-6.15-7" class="pilcrow">¶</a></p>
+<p id="section-6.15-8">0x04: The sender is a relay that cannot obtain the current track status from
+upstream. Subsequent fields contain the largest group and object ID known to
 the sender.<a href="#section-6.15-8" class="pilcrow">¶</a></p>
 <p id="section-6.15-9">Any other value in the Status Code field is a malformed message.<a href="#section-6.15-9" class="pilcrow">¶</a></p>
-<p id="section-6.15-10">The 'Current Group ID field' usually contains the highest group ID the sender has
-observed. If the sender is a relay that does not have an active subscription to
-the track, it <span class="bcp14">SHOULD</span> send a GET_CURRENT_GROUP message upstream to obtain up-to-
-date information before sending a CURRENT_GROUP.<a href="#section-6.15-10" class="pilcrow">¶</a></p>
-<p id="section-6.15-11">The receiver of multiple CURRENT_GROUP messages for the same track should use
-the highest Current Group ID that it observes.<a href="#section-6.15-11" class="pilcrow">¶</a></p>
+<p id="section-6.15-10">When a relay is subscribed to a track, it can simply return the highest group
+and object ID it has observed, whether or not that object was cached. If not
+subscribed, a relay <span class="bcp14">SHOULD</span> send a TRACK_STATUS_REQUEST upstream to obtain
+updated information.<a href="#section-6.15-10" class="pilcrow">¶</a></p>
+<p id="section-6.15-11">Alternatively, the relay <span class="bcp14">MAY</span> subscribe to the track to obtain the same
+information.<a href="#section-6.15-11" class="pilcrow">¶</a></p>
+<p id="section-6.15-12">If a relay cannot or will not do either, it should return its best available
+information with status code 0x04.<a href="#section-6.15-12" class="pilcrow">¶</a></p>
+<p id="section-6.15-13">The receiver of multiple TRACK_STATUS messages for a track uses the information
+from the latest arriving message, as they are delivered in order on a single
+stream.<a href="#section-6.15-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="message-goaway">
