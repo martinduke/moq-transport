@@ -5,13 +5,13 @@
 MOQ                                                            L. Curley
 Internet-Draft                                                   Discord
 Intended status: Standards Track                                K. Pugin
-Expires: 5 October 2024                                             Meta
+Expires: 6 October 2024                                             Meta
                                                            S. Nandakumar
                                                                    Cisco
                                                              V. Vasiliev
                                                            I. Swett, Ed.
                                                                   Google
-                                                            3 April 2024
+                                                            4 April 2024
 
 
                        Media over QUIC Transport
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 October 2024.
+   This Internet-Draft will expire on 6 October 2024.
 
 Copyright Notice
 
@@ -1637,7 +1637,7 @@ Table of Contents
      Subscribe ID (i),
      Track Alias (i),
      Group ID (i),
-     Next Object ID (i),
+     Object Count (i),
    }
 
                     Figure 21: MOQT END_OF_GROUP Message
@@ -1648,9 +1648,9 @@ Table of Contents
    for groups whose subscription range does not include the last object
    of a group.
 
-   The 'Next Object ID' field is one greater than the highest Object ID
-   in the group.  A publisher SHOULD send an END_OF_GROUP message with a
-   Next Object ID of zero when it skips a Group ID.
+   The 'Object Count' field is one greater than the highest Object ID in
+   the group.  A publisher MUST send an END_OF_GROUP message with a Next
+   Object ID of zero when it skips a Group ID.
 
    When a track's forwading preference is 'Track', the sender
    interleaves END_OF_GROUP messages with OBJECT messages in the Track
