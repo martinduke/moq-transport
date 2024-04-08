@@ -5,13 +5,13 @@
 MOQ                                                            L. Curley
 Internet-Draft                                                   Discord
 Intended status: Standards Track                                K. Pugin
-Expires: 5 October 2024                                             Meta
+Expires: 10 October 2024                                            Meta
                                                            S. Nandakumar
                                                                    Cisco
                                                              V. Vasiliev
                                                            I. Swett, Ed.
                                                                   Google
-                                                            3 April 2024
+                                                            8 April 2024
 
 
                        Media over QUIC Transport
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 October 2024.
+   This Internet-Draft will expire on 10 October 2024.
 
 Copyright Notice
 
@@ -1662,7 +1662,7 @@ Table of Contents
    other value is a malformed message.
 
    0x00: The track is in progress, and subsequent fields contain the
-   highest group and object ID known to the sender for that track.
+   highest group and object ID for that track.
 
    0x01: The track does not exist.  Subsequent fields MUST be zero, and
    any other value is a malformed message.
@@ -1671,7 +1671,7 @@ Table of Contents
    Any other value is a malformed message.
 
    0x03: The track has finished, so there is no "live edge."  Subsequent
-   fields contain the highest Group and object ID known to the sender.
+   fields contain the highest Group and object ID known.
 
    0x04: The sender is a relay that cannot obtain the current track
    status from upstream.  Subsequent fields contain the largest group
