@@ -1635,6 +1635,9 @@ Table of Contents
    control stream to obtain information about the current status of a
    given track.
 
+   A TRACK_STATUS message MUST be sent in response to each
+   TRACK_STATUS_REQUEST.
+
    TRACK_STATUS_REQUEST Message {
      Track Namespace (b),
      Track Name (b),
@@ -1675,7 +1678,7 @@ Table of Contents
 
    0x04: The sender is a relay that cannot obtain the current track
    status from upstream.  Subsequent fields contain the largest group
-   and object ID known to the sender.
+   and object ID known.
 
    Any other value in the Status Code field is a malformed message.
 

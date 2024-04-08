@@ -3399,9 +3399,10 @@ ANNOUNCE_CANCEL Message {
         </h3>
 <p id="section-6.14-1">A potential subscriber sends a 'TRACK_STATUS_REQUEST' message on the control
  stream to obtain information about the current status of a given track.<a href="#section-6.14-1" class="pilcrow">¶</a></p>
+<p id="section-6.14-2">A TRACK_STATUS message <span class="bcp14">MUST</span> be sent in response to each TRACK_STATUS_REQUEST.<a href="#section-6.14-2" class="pilcrow">¶</a></p>
 <span id="name-moqt-track_status_request-m"></span><div id="moq-track-status-request-format">
 <figure id="figure-21">
-          <div class="alignLeft art-text artwork" id="section-6.14-2.1">
+          <div class="alignLeft art-text artwork" id="section-6.14-3.1">
 <pre>
 TRACK_STATUS_REQUEST Message {
   Track Namespace (b),
@@ -3451,8 +3452,7 @@ value is a malformed message.<a href="#section-6.15-6" class="pilcrow">¶</a></p
 <p id="section-6.15-7">0x03: The track has finished, so there is no "live edge." Subsequent fields
 contain the highest Group and object ID known.<a href="#section-6.15-7" class="pilcrow">¶</a></p>
 <p id="section-6.15-8">0x04: The sender is a relay that cannot obtain the current track status from
-upstream. Subsequent fields contain the largest group and object ID known to
-the sender.<a href="#section-6.15-8" class="pilcrow">¶</a></p>
+upstream. Subsequent fields contain the largest group and object ID known.<a href="#section-6.15-8" class="pilcrow">¶</a></p>
 <p id="section-6.15-9">Any other value in the Status Code field is a malformed message.<a href="#section-6.15-9" class="pilcrow">¶</a></p>
 <p id="section-6.15-10">When a relay is subscribed to a track, it can simply return the highest group
 and object ID it has observed, whether or not that object was cached. If not
