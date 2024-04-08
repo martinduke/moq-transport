@@ -3455,9 +3455,9 @@ contain the highest Group and object ID known.<a href="#section-6.15-7" class="p
 upstream. Subsequent fields contain the largest group and object ID known.<a href="#section-6.15-8" class="pilcrow">¶</a></p>
 <p id="section-6.15-9">Any other value in the Status Code field is a malformed message.<a href="#section-6.15-9" class="pilcrow">¶</a></p>
 <p id="section-6.15-10">When a relay is subscribed to a track, it can simply return the highest group
-and object ID it has observed, whether or not that object was cached. If not
-subscribed, a relay <span class="bcp14">SHOULD</span> send a TRACK_STATUS_REQUEST upstream to obtain
-updated information.<a href="#section-6.15-10" class="pilcrow">¶</a></p>
+and object ID it has observed, whether or not that object was cached or
+completely delivered. If not subscribed, a relay <span class="bcp14">SHOULD</span> send a
+TRACK_STATUS_REQUEST upstream to obtain updated information.<a href="#section-6.15-10" class="pilcrow">¶</a></p>
 <p id="section-6.15-11">Alternatively, the relay <span class="bcp14">MAY</span> subscribe to the track to obtain the same
 information.<a href="#section-6.15-11" class="pilcrow">¶</a></p>
 <p id="section-6.15-12">If a relay cannot or will not do either, it should return its best available
