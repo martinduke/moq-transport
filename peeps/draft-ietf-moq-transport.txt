@@ -5,13 +5,13 @@
 Media Over QUIC                                                L. Curley
 Internet-Draft                                                   Discord
 Intended status: Standards Track                                K. Pugin
-Expires: 15 February 2025                                           Meta
+Expires: 16 February 2025                                           Meta
                                                            S. Nandakumar
                                                                    Cisco
                                                              V. Vasiliev
                                                            I. Swett, Ed.
                                                                   Google
-                                                          14 August 2024
+                                                          15 August 2024
 
 
                        Media over QUIC Transport
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 February 2025.
+   This Internet-Draft will expire on 16 February 2025.
 
 Copyright Notice
 
@@ -1736,7 +1736,7 @@ Table of Contents
    When a stream begins with STREAM_HEADER_TRACK, all objects on the
    stream belong to the track requested in the Subscribe message
    identified by Subscribe ID.  All objects on the stream have the
-   `Publisher Priority' specified in the stream header.
+   Publisher Priority specified in the stream header.
 
    STREAM_HEADER_TRACK Message {
      Subscribe ID (i)
@@ -1793,7 +1793,7 @@ Table of Contents
    To send an Object with Object Forwarding Preference = Peep, find the
    open stream that is associated with the subscription, Group ID and
    Peep ID, or open a new one and send the STREAM_HEADER_PEEP.  Then
-   serialize the ollowing fields.
+   serialize the following fields.
 
    The Object Status field is only sent if the Object Payload Length is
    zero.
