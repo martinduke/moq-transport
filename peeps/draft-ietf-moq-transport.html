@@ -3382,6 +3382,10 @@ are beyond the end of a group or track.<a href="#section-7.1.1.1-1" class="pilcr
        group. This is sent right after the last object in the
        track. This <span class="bcp14">SHOULD</span> be cached.<a href="#section-7.1.1.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
+              <li class="normal" id="section-7.1.1.1-3.6">
+                <p id="section-7.1.1.1-3.6.1">0x5 := Indicates end of Peep. Object ID is one greater than the largest
+       normal object ID in the Peep.<a href="#section-7.1.1.1-3.6.1" class="pilcrow">¶</a></p>
+</li>
             </ul>
 <p id="section-7.1.1.1-4">Any other value <span class="bcp14">SHOULD</span> be treated as a protocol error and terminate the
 session with a Protocol Violation (<a href="#session-termination" class="auto internal xref">Section 3.5</a>).
