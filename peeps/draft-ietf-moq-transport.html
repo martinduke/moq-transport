@@ -33,7 +33,7 @@ networks and is designed for high scale and low latency distribution.
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.32.3
-    setuptools 69.5.1
+    setuptools 70.3.0
     wcwidth 0.2.13
 -->
 <link href="draft-ietf-moq-transport.xml" rel="alternate" type="application/rfc+xml">
@@ -1037,7 +1037,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Curley, et al.</td>
-<td class="center">Expires 16 February 2025</td>
+<td class="center">Expires 23 February 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1050,12 +1050,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-08-15" class="published">15 August 2024</time>
+<time datetime="2024-08-22" class="published">22 August 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-02-16">16 February 2025</time></dd>
+<dd class="expires"><time datetime="2025-02-23">23 February 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1127,7 +1127,7 @@ networks and is designed for high scale and low latency distribution.<a href="#s
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1715,24 +1715,26 @@ and retransmission of data. Furthermore, many implementations offer the ability
 to control the relative priority of streams, which allows control over the
 scheduling of sending data on active streams.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.2-4">Every object within a Group belongs to exactly one Peep.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5">Original publishers assign each Peep a Peep ID, and do so as they see fit. The
+<p id="section-2.2-5">Original publishers assign each Peep a Peep ID, and do so as they see fit.  The
 scope of a Peep ID is a Group, so Peeps from different Groups <span class="bcp14">MAY</span> share a Peep
-ID without implying any relationship between them.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
-<p id="section-2.2-6">However, the following strategy is <span class="bcp14">RECOMMENDED</span>:<a href="#section-2.2-6" class="pilcrow">¶</a></p>
+ID without implying any relationship between them. In general, publishers assign
+objects to peeps in order to leverage the features of QUIC streams as described
+above.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-2.2-6">An example strategy for using QUIC stream properties follows. If object A is
+dependent on object B, then delivery of A can follow B, i.e. B and A can be
+usefully delivered over a single QUIC stream. Furthermore, in this example:<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-7.1">
-            <p id="section-2.2-7.1.1">Higher object IDs are dependent on lower object IDs in the same peep.<a href="#section-2.2-7.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-7.1.1">If an object is dependent on all previous objects in a Peep, it is added to
+that Peep.<a href="#section-2.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-7.2">
-            <p id="section-2.2-7.2.1">If two objects are dependent on the same lower object ID, but are not
-dependent on each other, one ought to assigned the same peep as the lower
-ID, but the other ought to be in a different peep. The second peep would
-ideally have a lower priority than the one with two objects.<a href="#section-2.2-7.2.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-7.2.1">If an object is not dependent on some of the objects in a Peep, it goes in
+a different Peep.<a href="#section-2.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-7.3">
-            <p id="section-2.2-7.3.1">There often multiple assignment schemes that meet these conditions.
-Original publishers ought to choose an assignment that minimizes the number
-of peeps (and therefore QUIC streams) in the group.<a href="#section-2.2-7.3.1" class="pilcrow">¶</a></p>
+            <p id="section-2.2-7.3.1">There are often many ways to compose Peeps that meet these criteria. Where
+possible, choose the composition that results in the fewest Peeps in a group.<a href="#section-2.2-7.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-2.2-8">For example, imagine that Object 3 and Object 2 are both dependent on Object
@@ -1742,14 +1744,6 @@ in another, with lower priority. The separate stream prevents delivery of
 Object 3 from being blocked by the loss of Object 2.<a href="#section-2.2-8" class="pilcrow">¶</a></p>
 <p id="section-2.2-9">Alternatively, objects 1 and 2 could be in one peep and 3 in another. The
 optimal choice would depend on the dependencies of later objects.<a href="#section-2.2-9" class="pilcrow">¶</a></p>
-<p id="section-2.2-10">An original publisher might not follow these guidelines. Reasons would
-include implementation complexity, lack of foreknowledge of the dependencies
-of further objects, the knowledge that the transport is WebTransport over
-HTTP/2 (thus introducing head-of-line blocking across streams), or knowledge
-of low session stream limits that require aggregation of independent objects
-into the same stream.<a href="#section-2.2-10" class="pilcrow">¶</a></p>
-<p id="section-2.2-11">For the purposes of peep assignment, the dependencies of objects with non-
-normal status are described in <a href="#object-status" class="auto internal xref">Section 7.1.1.1</a>.<a href="#section-2.2-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="model-group">
@@ -3394,12 +3388,6 @@ session with a Protocol Violation (<a href="#session-termination" class="auto in
 Any object with a status code other than zero <span class="bcp14">MUST</span> have an empty payload.<a href="#section-7.1.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-7.1.1.1-5">Though some status information could be inferred from QUIC stream state,
 that information is not reliable and cacheable.<a href="#section-7.1.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-7.1.1.1-6">In most cases, messages with a non zero status code are sent on the same
-stream that an object with that GroupID would have been sent on. The
-exception to this is when that stream has been reset; in that case they
-are sent on a new stream. This is to avoid the status message being lost
-in cases such as a relay dropping a group and reseting the stream the
-group is being sent on.<a href="#section-7.1.1.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
