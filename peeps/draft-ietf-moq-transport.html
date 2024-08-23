@@ -2075,10 +2075,9 @@ the corresponding SUBSCRIBE_OK.<a href="#section-4-6" class="pilcrow">¶</a></p>
 Objects with a lower Object Id are always sent before objects with a
 higher Object Id, regardless of the specified Group Order. If the group
 contains more than one Peep and the priority varies between these Peeps,
-higher priority Peeps are sent before lower priority Peeps. If the priority of
-two Peeps in a Group are equal, there is no normative requirement for which of
-those Peeps is sent next. Within a Peep, Objects <span class="bcp14">MUST</span> bs sent in increasing
-Object ID order.<a href="#section-4-7" class="pilcrow">¶</a></p>
+higher priority Peeps are sent before lower priority Peeps. If the specified
+priority of two Peeps in a Group are equal, the lower Peep ID has priority.
+Within a Peep, Objects <span class="bcp14">MUST</span> bs sent in increasing Object ID order.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <p id="section-4-8">The Group Order cannot be changed via a SUBSCRIBE_UPDATE message, and
 instead an UNSUBSCRIBE and SUBSCRIBE can be used.<a href="#section-4-8" class="pilcrow">¶</a></p>
 <p id="section-4-9">Relays <span class="bcp14">SHOULD</span> respect the subscriber and original publisher's priorities.
@@ -3655,10 +3654,6 @@ reaching a resource limit.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-9-3">TODO: register the URI scheme and the ALPN<a href="#section-9-3" class="pilcrow">¶</a></p>
-<p id="section-9-4">TODO: the MOQT spec should establish the IANA registration table for MoQ
-Streaming Formats. Each MoQ streaming format can then register its type
-in that table. The MoQ Streaming Format type <span class="bcp14">MUST</span> be carried as the
-leading varint in catalog track objects.<a href="#section-9-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
