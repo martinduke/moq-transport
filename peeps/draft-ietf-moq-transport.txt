@@ -374,14 +374,14 @@ Table of Contents
    leverage the features of QUIC streams as described above.
 
    An example strategy for using QUIC stream properties follows.  If
-   object A is dependent on object B, then delivery of A can follow B,
-   i.e. B and A can be usefully delivered over a single QUIC stream.
+   object B is dependent on object A, then delivery of B can follow A,
+   i.e. A and B can be usefully delivered over a single QUIC stream.
    Furthermore, in this example:
 
    *  If an object is dependent on all previous objects in a Peep, it is
       added to that Peep.
 
-   *  If an object is not dependent on some of the objects in a Peep, it
+   *  If an object is not dependent on all of the objects in a Peep, it
       goes in a different Peep.
 
    *  There are often many ways to compose Peeps that meet these
@@ -675,8 +675,10 @@ Table of Contents
    lower Object Id are always sent before objects with a higher Object
    Id, regardless of the specified Group Order.  If the group contains
    more than one Peep and the priority varies between these Peeps,
-   higher priority Peeps are sent before lower priority Peeps, and
-   Objects in peeps are sent in increasing Object Id order.
+   higher priority Peeps are sent before lower priority Peeps.  If the
+   priority of two Peeps in a Group are equal, there is no normative
+   requirement for which of those Peeps is sent next.  Within a Peep,
+   Objects MUST bs sent in increasing Object ID order.
 
    The Group Order cannot be changed via a SUBSCRIBE_UPDATE message, and
    instead an UNSUBSCRIBE and SUBSCRIBE can be used.
@@ -1870,6 +1872,11 @@ Table of Contents
    *  Message types
 
    TODO: register the URI scheme and the ALPN
+
+   TODO: the MOQT spec should establish the IANA registration table for
+   MoQ Streaming Formats.  Each MoQ streaming format can then register
+   its type in that table.  The MoQ Streaming Format type MUST be
+   carried as the leading varint in catalog track objects.
 
 Contributors
 
