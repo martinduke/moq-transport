@@ -1720,8 +1720,8 @@ scope of a Peep ID is a Group, so Peeps from different Groups <span class="bcp14
 ID without implying any relationship between them. In general, publishers assign
 objects to peeps in order to leverage the features of QUIC streams as described
 above.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
-<p id="section-2.2-6">An example strategy for using QUIC stream properties follows. If object A is
-dependent on object B, then delivery of A can follow B, i.e. B and A can be
+<p id="section-2.2-6">An example strategy for using QUIC stream properties follows. If object B is
+dependent on object A, then delivery of B can follow A, i.e. A and B can be
 usefully delivered over a single QUIC stream. Furthermore, in this example:<a href="#section-2.2-6" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.2-7.1">
@@ -1729,7 +1729,7 @@ usefully delivered over a single QUIC stream. Furthermore, in this example:<a hr
 that Peep.<a href="#section-2.2-7.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-7.2">
-            <p id="section-2.2-7.2.1">If an object is not dependent on some of the objects in a Peep, it goes in
+            <p id="section-2.2-7.2.1">If an object is not dependent on all of the objects in a Peep, it goes in
 a different Peep.<a href="#section-2.2-7.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-7.3">
@@ -2074,8 +2074,10 @@ the corresponding SUBSCRIBE_OK.<a href="#section-4-6" class="pilcrow">¶</a></p>
 Objects with a lower Object Id are always sent before objects with a
 higher Object Id, regardless of the specified Group Order. If the group
 contains more than one Peep and the priority varies between these Peeps,
-higher priority Peeps are sent before lower priority Peeps, and Objects
-in peeps are sent in increasing Object Id order.<a href="#section-4-7" class="pilcrow">¶</a></p>
+higher priority Peeps are sent before lower priority Peeps. If the priority of
+two Peeps in a Group are equal, there is no normative requirement for which of
+those Peeps is sent next. Within a Peep, Objects <span class="bcp14">MUST</span> bs sent in increasing
+Object ID order.<a href="#section-4-7" class="pilcrow">¶</a></p>
 <p id="section-4-8">The Group Order cannot be changed via a SUBSCRIBE_UPDATE message, and
 instead an UNSUBSCRIBE and SUBSCRIBE can be used.<a href="#section-4-8" class="pilcrow">¶</a></p>
 <p id="section-4-9">Relays <span class="bcp14">SHOULD</span> respect the subscriber and original publisher's priorities.
@@ -3652,6 +3654,10 @@ reaching a resource limit.<a href="#section-8.1-4" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-9-3">TODO: register the URI scheme and the ALPN<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-4">TODO: the MOQT spec should establish the IANA registration table for MoQ
+Streaming Formats. Each MoQ streaming format can then register its type
+in that table. The MoQ Streaming Format type <span class="bcp14">MUST</span> be carried as the
+leading varint in catalog track objects.<a href="#section-9-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
