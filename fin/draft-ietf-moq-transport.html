@@ -4188,12 +4188,12 @@ more streams.<a href="#section-7.3.2-1" class="pilcrow">¶</a></p>
 fall before the beginning of a subscription, it <span class="bcp14">MUST</span> close the stream
 with a FIN.<a href="#section-7.3.2-2" class="pilcrow">¶</a></p>
 <p id="section-7.3.2-3">If a sender closes the stream before verifying it has delivered all such
-objects when it , it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
-<span>[<a href="#I-D.draft-ietf-quic-reliable-stream-reset" class="cite xref">I-D.draft-ietf-quic-reliable-stream-reset</a>]</span> frame. This includes early
-termination of subscription due to an UNSUBSCRIBE message, a sender's
-decision to abandon the subscription before the Group is complete, or a
-SUBSCRIBE_UPDATE moving the end of the subscription to before the current
-Group.<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
+objects, it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
+<span>[<a href="#I-D.draft-ietf-quic-reliable-stream-reset" class="cite xref">I-D.draft-ietf-quic-reliable-stream-reset</a>]</span> frame. This includes an open
+Group exceeding its Delivery Timeout, early termination of subscription due to
+an UNSUBSCRIBE message, a sender's decision to abandon the subscription before
+the Group is complete, or a SUBSCRIBE_UPDATE moving the end of the subscription
+to before the current Group.<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.3.2-4">If a sender does not deliver any objects from a Subgroup of a subscribed Group,
 it <span class="bcp14">MAY</span> send a STREAM_HEADER_SUBGROUP on a new data stream, with no objects, and
 then send RESET_STREAM_AT with a reliable_size equivalent to the length of the
