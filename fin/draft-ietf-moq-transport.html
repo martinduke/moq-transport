@@ -4184,48 +4184,54 @@ Subgroup, particularly if they serve as a relay or cache. QUIC and Webtransport
 streams provide signals that can be used for this purpose. Closing Subgroups
 promptly frees system resources and often unlocks flow control credit to open
 more streams.<a href="#section-7.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-2">If a sender has delivered all objects in a Subgroup, except any objects that
-fall before the beginning of a subscription, it <span class="bcp14">MUST</span> close the stream
-with a FIN.<a href="#section-7.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-3">If a sender closes the stream before verifying it has delivered all such
-objects, it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
+<p id="section-7.3.2-2">If a sender has delivered all objects in a Subgroup to the QUIC stream, except
+any objects that fall before the beginning of a subscription, it <span class="bcp14">MUST</span> close the
+stream with a FIN.<a href="#section-7.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-3">If a sender closes the stream before delivering all such objects to the QUIC
+stream, it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
 <span>[<a href="#I-D.draft-ietf-quic-reliable-stream-reset" class="cite xref">I-D.draft-ietf-quic-reliable-stream-reset</a>]</span> frame. This includes an open
-Group exceeding its Delivery Timeout, early termination of subscription due to
+Subgroup exceeding its Delivery Timeout, early termination of subscription due to
 an UNSUBSCRIBE message, a sender's decision to abandon the subscription before
-the Group is complete, or a SUBSCRIBE_UPDATE moving the end of the subscription
+the Subgroup is complete, or a SUBSCRIBE_UPDATE moving the end of the subscription
 to before the current Group.<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-4">If a sender does not deliver any objects from a Subgroup of a subscribed Group,
+<p id="section-7.3.2-4">A sender might deliver all objects in a Subgroup to the QUIC stream, including a
+FIN, and then reset the stream because any retransmissions are unnecessary due
+to any of the reset conditions above being met. In this case, the receiving
+application would receive the FIN if and only if all objects were, in fact,
+delivered. The application can therefore ignore a RESET_STREAM if it receives
+FIN.<a href="#section-7.3.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-5">If a sender does not deliver any objects from a Subgroup of a subscribed Group,
 it <span class="bcp14">MAY</span> send a STREAM_HEADER_SUBGROUP on a new data stream, with no objects, and
 then send RESET_STREAM_AT with a reliable_size equivalent to the length of the
 stream header. This would explicitly tell the receiver that there are unsent
-Subgroups in the Group.<a href="#section-7.3.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-5">Since SUBSCRIBEs always end on a group boundary [TODO: Update SUBSCRIBE to
+Subgroups in the Group.<a href="#section-7.3.2-5" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-6">Since SUBSCRIBEs always end on a group boundary [TODO: Update SUBSCRIBE to
 express this], an ending subscription can always cleanly close all its
 subgroups. A sender that terminates a stream early for any other reason (e.g.,
 to handoff to a different sender <span class="bcp14">MUST</span> use RESET_STREAM or RESET_STREAM_AT.
-Senders <span class="bcp14">SHOULD</span> terminate a stream on Group boundaries to avoid doing so.<a href="#section-7.3.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-6">An Original Publisher <span class="bcp14">MAY</span> create EndOfSubgroup objects to provide further
-indication that streams are OK to close.<a href="#section-7.3.2-6" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-7">[TODO: Do we still need EndOfSubgroup objects?]<a href="#section-7.3.2-7" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-8">An MoQT implementation that processes a stream FIN is assured it has received
+Senders <span class="bcp14">SHOULD</span> terminate a stream on Group boundaries to avoid doing so.<a href="#section-7.3.2-6" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-7">An Original Publisher <span class="bcp14">MAY</span> create EndOfSubgroup objects to provide further
+indication that streams are OK to close.<a href="#section-7.3.2-7" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-8">[TODO: Do we still need EndOfSubgroup objects?]<a href="#section-7.3.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-9">An MoQT implementation that processes a stream FIN is assured it has received
 all objects in a subgroup from the start of the subscription. If a relay, it
 can forward stream FINs to its own subscribers once those objects have been
 sent. A relay <span class="bcp14">MAY</span> use EndOfGroup, EndOfSubgroup, GroupDoesNotExist, and
 EndOfTrack objects to close streams even if the FIN has not arrived, as further
-objects on the stream would be a protocol violation.<a href="#section-7.3.2-8" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-9">Processing a RESET_STREAM or RESET_STREAM_AT means that there might be other
+objects on the stream would be a protocol violation.<a href="#section-7.3.2-9" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-10">Processing a RESET_STREAM or RESET_STREAM_AT means that there might be other
 objects in the Subgroup beyond the last one received. A relay might immediately
 reset the corresponding downstream stream, or it might attempt to recover the
 missing Objects in an effort to send FIN, presumably with some timeout. It also
 might send RESET_STREAM_AT with reliable_size set to the last object it has, so
 as to reliably deliver the objects it has while signaling that other objects
-exist.<a href="#section-7.3.2-9" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-10">A relay <span class="bcp14">MAY</span> also use EndOfGroup messages in a Subgroup stream to close streams
+exist.<a href="#section-7.3.2-10" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-11">A relay <span class="bcp14">MAY</span> also use EndOfGroup messages in a Subgroup stream to close streams
 for other Subgroups in that Group, if it has received all Object IDs between the
 highest Object ID in the subject Subgroup and the EndOfGroup object. This may be
-complex to implement.<a href="#section-7.3.2-10" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-11">A receiver <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
-or subgroup is no longer of interest to it.<a href="#section-7.3.2-11" class="pilcrow">¶</a></p>
+complex to implement.<a href="#section-7.3.2-11" class="pilcrow">¶</a></p>
+<p id="section-7.3.2-12">A receiver <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
+or subgroup is no longer of interest to it.<a href="#section-7.3.2-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fetch-header">
