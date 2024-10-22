@@ -4204,7 +4204,7 @@ stream header. This explicitly tells the receiver there is an unsent Subgroup.<a
 <p id="section-7.3.2-6">Since SUBSCRIBEs always end on a group boundary [TODO: Update SUBSCRIBE to
 express this], an ending subscription can always cleanly close all its
 subgroups. A sender that terminates a stream early for any other reason (e.g.,
-to handoff to a different sender <span class="bcp14">MUST</span> use RESET_STREAM or RESET_STREAM_AT.
+to handoff to a different sender) <span class="bcp14">MUST</span> use RESET_STREAM or RESET_STREAM_AT.
 Senders <span class="bcp14">SHOULD</span> terminate a stream on Group boundaries to avoid doing so.<a href="#section-7.3.2-6" class="pilcrow">¶</a></p>
 <p id="section-7.3.2-7">An Original Publisher <span class="bcp14">MAY</span> create EndOfSubgroup objects to provide further
 indication that streams are OK to close.<a href="#section-7.3.2-7" class="pilcrow">¶</a></p>
