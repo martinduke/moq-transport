@@ -4215,7 +4215,7 @@ can forward stream FINs to its own subscribers once those objects have been
 sent. A relay <span class="bcp14">MAY</span> treat receipt of EndOfGroup, EndOfSubgroup, GroupDoesNotExist, or
 EndOfTrack objects as a signal to close corresponding streams even if the FIN has not arrived, as further
 objects on the stream would be a protocol violation.<a href="#section-7.3.2-9" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-10">Similarly, an EndOfGroup message indicates the total number of Objects in the
+<p id="section-7.3.2-10">Similarly, an EndOfGroup message indicates the total maximum Object ID in the
 Group, so if all Objects in the Group have been received, a FIN can be sent on
 any stream where the entire subgroup has been sent. This might be complex to
 implement.<a href="#section-7.3.2-10" class="pilcrow">¶</a></p>
