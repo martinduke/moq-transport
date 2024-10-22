@@ -4191,8 +4191,7 @@ stream with a FIN.<a href="#section-7.3.2-2" class="pilcrow">¶</a></p>
 stream, it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
 <span>[<a href="#I-D.draft-ietf-quic-reliable-stream-reset" class="cite xref">I-D.draft-ietf-quic-reliable-stream-reset</a>]</span> frame. This includes an open
 Subgroup exceeding its Delivery Timeout, early termination of subscription due to
-an UNSUBSCRIBE message, a sender's decision to abandon the subscription before
-the Subgroup is complete, or a SUBSCRIBE_UPDATE moving the end of the subscription
+an UNSUBSCRIBE message, a sender's decision to abandon the subscription, or a SUBSCRIBE_UPDATE moving the end of the subscription
 to before the current Group.<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
 <p id="section-7.3.2-4">A sender might deliver all objects in a Subgroup to the QUIC stream, including a
 FIN, and then reset the stream because any retransmissions are unnecessary due
