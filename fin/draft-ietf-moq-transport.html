@@ -4213,10 +4213,10 @@ missing Objects in an effort send all the objects in the subgroups and the FIN. 
 might send RESET_STREAM_AT with reliable_size set to the last object it has, so
 as to reliably deliver the objects it has while signaling that other objects
 might exist.<a href="#section-7.3.2-9" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-10">A receiver <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
-or Subgroup is no longer of interest to it. The sender <span class="bcp14">SHOULD</span> respond with
-RESET_STREAM or RESET_STREAM_AT. If RESET_STREAM_AT, note that the receiver has
-indicated no interest in the objects, so setting a reliable_size beyond the
+<p id="section-7.3.2-10">A subscriber <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
+or Subgroup is no longer of interest to it. The publisher <span class="bcp14">SHOULD</span> respond with
+RESET_STREAM or RESET_STREAM_AT. If RESET_STREAM_AT is sent, note that the receiver
+has indicated no interest in the objects, so setting a reliable_size beyond the
 stream header is of questionable utility.<a href="#section-7.3.2-10" class="pilcrow">¶</a></p>
 <p id="section-7.3.2-11">RESET_STREAM and STOP_SENDING on SUBSCRIBE data streams have no impact on other
 Subgroups in the Group or the subscription, although applications might cancel all
