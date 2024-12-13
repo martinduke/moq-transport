@@ -543,7 +543,11 @@ figcaption, caption {
   }
   pre, svg {
     display: inline-block;
-    overflow-x: auto;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
   }
   pre {
     max-width: 100%;
@@ -1053,7 +1057,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Curley, et al.</td>
-<td class="center">Expires 6 June 2025</td>
+<td class="center">Expires 16 June 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1066,12 +1070,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-12-03" class="published">3 December 2024</time>
+<time datetime="2024-12-13" class="published">13 December 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-06-06">6 June 2025</time></dd>
+<dd class="expires"><time datetime="2025-06-16">16 June 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1143,7 +1147,7 @@ networks and is designed for high scale and low latency distribution.<a href="#s
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 6 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 June 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1185,7 +1189,7 @@ networks and is designed for high scale and low latency distribution.<a href="#s
                     <p id="section-toc.1-1.1.2.1.2.2.1" class="keepWithNext"><a href="#section-1.1.2" class="auto internal xref">1.1.2</a>.  <a href="#name-leveraging-quic" class="internal xref">Leveraging QUIC</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1.2.3">
-                    <p id="section-toc.1-1.1.2.1.2.3.1" class="keepWithNext"><a href="#section-1.1.3" class="auto internal xref">1.1.3</a>.  <a href="#name-universal" class="internal xref">Universal</a></p>
+                    <p id="section-toc.1-1.1.2.1.2.3.1" class="keepWithNext"><a href="#section-1.1.3" class="auto internal xref">1.1.3</a>.  <a href="#name-convergence" class="internal xref">Convergence</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1.2.4">
                     <p id="section-toc.1-1.1.2.1.2.4.1"><a href="#section-1.1.4" class="auto internal xref">1.1.4</a>.  <a href="#name-relays" class="internal xref">Relays</a></p>
@@ -1411,21 +1415,24 @@ networks and is designed for high scale and low latency distribution.<a href="#s
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-object-datagram-message" class="internal xref">Object Datagram Message</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-streams" class="internal xref">Streams</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-object-datagram-status-mess" class="internal xref">Object Datagram Status Message</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-streams" class="internal xref">Streams</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.1">
-                    <p id="section-toc.1-1.7.2.3.2.1.1"><a href="#section-7.3.1" class="auto internal xref">7.3.1</a>.  <a href="#name-stream-header-subgroup" class="internal xref">Stream Header Subgroup</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.1">
+                    <p id="section-toc.1-1.7.2.4.2.1.1"><a href="#section-7.4.1" class="auto internal xref">7.4.1</a>.  <a href="#name-stream-header-subgroup" class="internal xref">Stream Header Subgroup</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.2">
-                    <p id="section-toc.1-1.7.2.3.2.2.1"><a href="#section-7.3.2" class="auto internal xref">7.3.2</a>.  <a href="#name-closing-subgroup-streams" class="internal xref">Closing Subgroup Streams</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.2">
+                    <p id="section-toc.1-1.7.2.4.2.2.1"><a href="#section-7.4.2" class="auto internal xref">7.4.2</a>.  <a href="#name-closing-subgroup-streams" class="internal xref">Closing Subgroup Streams</a></p>
 </li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.3">
-                    <p id="section-toc.1-1.7.2.3.2.3.1"><a href="#section-7.3.3" class="auto internal xref">7.3.3</a>.  <a href="#name-fetch-header" class="internal xref">Fetch Header</a></p>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.3">
+                    <p id="section-toc.1-1.7.2.4.2.3.1"><a href="#section-7.4.3" class="auto internal xref">7.4.3</a>.  <a href="#name-fetch-header" class="internal xref">Fetch Header</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
 </li>
             </ul>
 </li>
@@ -1474,7 +1481,7 @@ response to subscription requests from a multiplicity of endpoints. MOQT
 supports wide range of use-cases with different resiliency and latency
 (live, interactive) needs without compromising the scalability and cost
 effectiveness associated with content delivery networks.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">MOQT is a generic protocol is designed to work in concert with multiple
+<p id="section-1-2">MOQT is a generic protocol designed to work in concert with multiple
 MoQ Streaming Formats. These MoQ Streaming Formats define how content is
 encoded, packaged, and mapped to MOQT objects, along with policies for
 discovery and subscription.<a href="#section-1-2" class="pilcrow">¶</a></p>
@@ -1504,30 +1511,27 @@ discovery and subscription.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-motivation" class="section-name selfRef">Motivation</a>
         </h3>
 <p id="section-1.1-1">The development of MOQT is driven by goals in a number of areas -
-specifically latency, the robustness of QUIC, workflow efficiency and
-relay support.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+specifically latency, the robust feature set of QUIC and relay
+support.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <div id="latency">
 <section id="section-1.1.1">
           <h4 id="name-latency">
 <a href="#section-1.1.1" class="section-number selfRef">1.1.1. </a><a href="#name-latency" class="section-name selfRef">Latency</a>
           </h4>
-<p id="section-1.1.1-1">HTTP Adaptive Streaming (HAS) has been successful at achieving scale
-although often at the cost of latency. Latency is necessary to correct
-for variable network throughput. Ideally live content is consumed at the
-same bitrate it is produced. End-to-end latency would be fixed and only
-subject to encoding and transmission delays. Unfortunately, networks
-have variable throughput, primarily due to congestion. Attempting to
-deliver content encoded at a higher bitrate than the network can support
-causes queuing along the path from producer to consumer. The speed at
-which a protocol can detect and respond to queuing determines the
-overall latency. TCP-based protocols are simple but are slow to detect
-congestion and suffer from head-of-line blocking. Protocols utilizing
-UDP directly can avoid queuing, but the application is then responsible
-for the complexity of fragmentation, congestion control, retransmissions,
-receiver feedback, reassembly, and more. One goal of MOQT is to achieve
-the best of both these worlds: leverage the features of QUIC to create a
-simple yet flexible low latency protocol that can rapidly detect and
-respond to congestion.<a href="#section-1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1.1-1">Latency is necessary to correct for variable network throughput. Ideally live
+content is consumed at the same bitrate it is produced. End-to-end latency would
+be fixed and only subject to encoding and transmission delays. Unfortunately,
+networks have variable throughput, primarily due to congestion. Attempting to
+deliver content encoded at a higher bitrate than the network can support causes
+queuing along the path from producer to consumer. The speed at which a protocol
+can detect and respond to congestion determines the overall latency. TCP-based
+protocols are simple but are slow to detect congestion and suffer from
+head-of-line blocking. Protocols utilizing UDP directly can avoid queuing, but
+the application is then responsible for the complexity of fragmentation,
+congestion control, retransmissions, receiver feedback, reassembly, and
+more. One goal of MOQT is to achieve the best of both these worlds: leverage the
+features of QUIC to create a simple yet flexible low latency protocol that can
+rapidly detect and respond to congestion.<a href="#section-1.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="leveraging-quic">
@@ -1538,27 +1542,23 @@ respond to congestion.<a href="#section-1.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1.2-1">The parallel nature of QUIC streams can provide improvements in the face
 of loss. A goal of MOQT is to design a streaming protocol to leverage
 the transmission benefits afforded by parallel QUIC streams as well
-exercising options for flexible loss recovery. Applying <span>[<a href="#QUIC" class="cite xref">QUIC</a>]</span> to HAS
-via HTTP/3 has not yet yielded generalized improvements in
-throughput. One reason for this is that sending segments down a single
-QUIC stream still allows head-of-line blocking to occur.<a href="#section-1.1.2-1" class="pilcrow">¶</a></p>
+exercising options for flexible loss recovery.<a href="#section-1.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="universal">
+<div id="convergence">
 <section id="section-1.1.3">
-          <h4 id="name-universal">
-<a href="#section-1.1.3" class="section-number selfRef">1.1.3. </a><a href="#name-universal" class="section-name selfRef">Universal</a>
+          <h4 id="name-convergence">
+<a href="#section-1.1.3" class="section-number selfRef">1.1.3. </a><a href="#name-convergence" class="section-name selfRef">Convergence</a>
           </h4>
-<p id="section-1.1.3-1">Internet delivered media today has protocols optimized for ingest and
-separate protocols optimized for distribution. This protocol switch in
-the distribution chain necessitates intermediary origins which
-re-package the media content. While specialization can have its
-benefits, there are gains in efficiency to be had in not having to
-re-package content. A goal of MOQT is to develop a single protocol which
-can be used for transmission from contribution to distribution. A
-related goal is the ability to support existing encoding and packaging
-schemas, both for backwards compatibility and for interoperability with
-the established content preparation ecosystem.<a href="#section-1.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-1.1.3-1">Some live media architectures today have separate protocols for ingest and
+distribution, for example RTMP and HTTP based HLS or DASH. Switching protocols
+necessitates intermediary origins which re-package the
+media content. While specialization can have its benefits, there are efficiency
+gains to be had in not having to re-package content. A goal of MOQT is to
+develop a single protocol which can be used for transmission from contribution
+to distribution. A related goal is the ability to support existing encoding and
+packaging schemas, both for backwards compatibility and for interoperability
+with the established content preparation ecosystem.<a href="#section-1.1.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="relays">
@@ -1605,70 +1605,75 @@ appear in all capitals, as shown here.<a href="#section-1.2-1" class="pilcrow">�
             <p id="section-1.2-2.6.1">A Client or Server.<a href="#section-1.2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.7">Publisher:</dt>
+<dt id="section-1.2-2.7">Peer:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.8">
-            <p id="section-1.2-2.8.1">An endpoint that handles subscriptions by sending requested Objects from the requested track.<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.8.1">The other endpoint than the one being described<a href="#section-1.2-2.8.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.9">Subscriber:</dt>
+<dt id="section-1.2-2.9">Publisher:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.10">
-            <p id="section-1.2-2.10.1">An endpoint that subscribes to and receives tracks.<a href="#section-1.2-2.10.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.10.1">An endpoint that handles subscriptions by sending requested Objects from the requested track.<a href="#section-1.2-2.10.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.11">Original Publisher:</dt>
+<dt id="section-1.2-2.11">Subscriber:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.12">
-            <p id="section-1.2-2.12.1">The initial publisher of a given track.<a href="#section-1.2-2.12.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.12.1">An endpoint that subscribes to and receives tracks.<a href="#section-1.2-2.12.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.13">End Subscriber:</dt>
+<dt id="section-1.2-2.13">Original Publisher:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.14">
-            <p id="section-1.2-2.14.1">A subscriber that initiates a subscription and does not send the data on to other subscribers.<a href="#section-1.2-2.14.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.14.1">The initial publisher of a given track.<a href="#section-1.2-2.14.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.15">Relay:</dt>
+<dt id="section-1.2-2.15">End Subscriber:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.16">
-            <p id="section-1.2-2.16.1">An entity that is both a Publisher and a Subscriber, but not the Original
-Publisher or End Subscriber.<a href="#section-1.2-2.16.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.16.1">A subscriber that initiates a subscription and does not send the data on to other subscribers.<a href="#section-1.2-2.16.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.17">Upstream:</dt>
+<dt id="section-1.2-2.17">Relay:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.18">
-            <p id="section-1.2-2.18.1">In the direction of the Original Publisher<a href="#section-1.2-2.18.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.18.1">An entity that is both a Publisher and a Subscriber, but not the Original
+Publisher or End Subscriber.<a href="#section-1.2-2.18.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.19">Downstream:</dt>
+<dt id="section-1.2-2.19">Upstream:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.20">
-            <p id="section-1.2-2.20.1">In the direction of the End Subscriber(s)<a href="#section-1.2-2.20.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.20.1">In the direction of the Original Publisher<a href="#section-1.2-2.20.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.21">Transport Session:</dt>
+<dt id="section-1.2-2.21">Downstream:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.22">
-            <p id="section-1.2-2.22.1">A raw QUIC connection or a WebTransport session.<a href="#section-1.2-2.22.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.22.1">In the direction of the End Subscriber(s)<a href="#section-1.2-2.22.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.23">Congestion:</dt>
+<dt id="section-1.2-2.23">Transport Session:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.24">
-            <p id="section-1.2-2.24.1">Packet loss and queuing caused by degraded or overloaded networks.<a href="#section-1.2-2.24.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.24.1">A raw QUIC connection or a WebTransport session.<a href="#section-1.2-2.24.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.25">Group:</dt>
+<dt id="section-1.2-2.25">Congestion:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.26">
-            <p id="section-1.2-2.26.1">A temporal sequence of objects. A group represents a join point in a
-track. See (<a href="#model-group" class="auto internal xref">Section 2.3</a>).<a href="#section-1.2-2.26.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.26.1">Packet loss and queuing caused by degraded or overloaded networks.<a href="#section-1.2-2.26.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.27">Object:</dt>
+<dt id="section-1.2-2.27">Group:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.28">
-            <p id="section-1.2-2.28.1">An object is an addressable unit whose payload is a sequence of
-bytes. Objects form the base element in the MOQT data model. See
-(<a href="#model-object" class="auto internal xref">Section 2.1</a>).<a href="#section-1.2-2.28.1" class="pilcrow">¶</a></p>
+            <p id="section-1.2-2.28.1">A temporal sequence of objects. A group represents a join point in a
+track. See (<a href="#model-group" class="auto internal xref">Section 2.3</a>).<a href="#section-1.2-2.28.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
-<dt id="section-1.2-2.29">Track:</dt>
+<dt id="section-1.2-2.29">Object:</dt>
           <dd style="margin-left: 1.5em" id="section-1.2-2.30">
-            <p id="section-1.2-2.30.1">An encoded bitstream. Tracks contain a sequential series of one or
+            <p id="section-1.2-2.30.1">An object is an addressable unit whose payload is a sequence of
+bytes. Objects form the base element in the MOQT data model. See
+(<a href="#model-object" class="auto internal xref">Section 2.1</a>).<a href="#section-1.2-2.30.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-1.2-2.31">Track:</dt>
+          <dd style="margin-left: 1.5em" id="section-1.2-2.32">
+            <p id="section-1.2-2.32.1">An encoded bitstream. Tracks contain a sequential series of one or
 more groups and are the subscribable entity with MOQT.
-See (<a href="#model-track" class="auto internal xref">Section 2.4</a>).<a href="#section-1.2-2.30.1" class="pilcrow">¶</a></p>
+See (<a href="#model-track" class="auto internal xref">Section 2.4</a>).<a href="#section-1.2-2.32.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -1773,10 +1778,11 @@ time.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">Objects are comprised of two parts: metadata and a payload.  The metadata is
 never encrypted and is always visible to relays (see <a href="#relays-moq" class="auto internal xref">Section 5</a>). The
 payload portion may be encrypted, in which case it is only visible to the
-Original Publisher and End Subscribers. The application is solely responsible
-for the content of the object payload. This includes the underlying encoding,
-compression, any end-to-end encryption, or authentication. A relay <span class="bcp14">MUST NOT</span>
-combine, split, or otherwise modify object payloads.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+Original Publisher and End Subscribers. The Original Publisher is solely
+responsible for the content of the object payload. This includes the
+underlying encoding, compression, any end-to-end encryption, or
+authentication. A relay <span class="bcp14">MUST NOT</span> combine, split, or otherwise modify object
+payloads.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <p id="section-2.1-3">Objects within a group are ordered numerically by their Object ID.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1954,7 +1960,7 @@ using definitions from <span>[<a href="#RFC3986" class="cite xref">RFC3986</a>]<
 moqt-URI = "moqt" "://" authority path-abempty [ "?" query ]
 </pre><a href="#section-3.1.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-3.1.2-3">The <code>authority</code> portion <span class="bcp14">MUST NOT</span> contain a non-empty <code>host</code> portion.
+<p id="section-3.1.2-3">The <code>authority</code> portion <span class="bcp14">MUST NOT</span> contain an empty <code>host</code> portion.
 The <code>moqt</code> URI scheme supports the <code>/.well-known/</code> path prefix defined in
 <span>[<a href="#RFC8615" class="cite xref">RFC8615</a>]</span>.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-4">This protocol does not specify any semantics on the <code>path-abempty</code> and
@@ -2001,13 +2007,13 @@ separate Setup parameters for that information in each version.<a href="#section
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-session-initialization" class="section-name selfRef">Session initialization</a>
         </h3>
 <p id="section-3.3-1">The first stream opened is a client-initiated bidirectional control stream where
-the peers exchange Setup messages (<a href="#message-setup" class="auto internal xref">Section 6.2</a>).  All messages defined in
-this draft except OBJECT and OBJECT_WITH_LENGTH are sent on the control stream
-after the Setup message. Control messages <span class="bcp14">MUST NOT</span> be sent on any other stream,
-and a peer receiving a control message on a different stream closes the session
-as a 'Protocol Violation'. Objects <span class="bcp14">MUST NOT</span> be sent on the control stream, and a
-peer receiving an Object on the control stream closes the session as a 'Protocol
-Violation'.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+the endpoints exchange Setup messages (<a href="#message-setup" class="auto internal xref">Section 6.2</a>).  All messages defined
+in this draft except OBJECT and OBJECT_WITH_LENGTH are sent on the control
+stream after the Setup message. Control messages <span class="bcp14">MUST NOT</span> be sent on any other
+stream, and a peer receiving a control message on a different stream closes the
+session as a 'Protocol Violation'. Objects <span class="bcp14">MUST NOT</span> be sent on the control
+stream, and a peer receiving an Object on the control stream closes the session
+as a 'Protocol Violation'.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">This draft only specifies a single use of bidirectional streams. Objects are
 sent on unidirectional streams.  Because there are no other uses of
 bidirectional streams, a peer <span class="bcp14">MAY</span> currently close the session as a
@@ -2294,7 +2300,7 @@ received for the track, to ensure the Group Order is correct.<a href="#section-5
 subscribers for each track. Each new OBJECT belonging to the
 track within the subscription range is forwarded to each active
 subscriber, dependent on the congestion response. A subscription
-remains active until the publisher of the track terminates the
+remains active until soon after the publisher of the track terminates the
 subscription with a SUBSCRIBE_DONE (see <a href="#message-subscribe-done" class="auto internal xref">Section 6.19</a>).<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 <p id="section-5.1-4">A caching relay saves Objects to its cache identified by the Object's
 Full Track Name, Group ID and Object ID. Relays <span class="bcp14">MUST</span> be able to
@@ -2513,10 +2519,10 @@ combine, split, or otherwise modify object payloads.  A relay <span class="bcp14
 prioritize sending Objects based on <a href="#priorities" class="auto internal xref">Section 4</a>.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.3-3">A publisher <span class="bcp14">SHOULD</span> begin sending incomplete objects when available to
 avoid incurring additional latency.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3-4">A relay that reads from a stream and writes to stream in order will
+<p id="section-5.3-4">A relay that reads from one stream and writes to another in order can
 introduce head-of-line blocking.  Packet loss will cause stream data to
-be buffered in the library, awaiting in order delivery, which will
-increase latency over additional hops.  To mitigate this, a relay <span class="bcp14">SHOULD</span>
+be buffered in the library, awaiting in-order delivery, which could
+increase latency over additional hops.  To mitigate this, a relay <span class="bcp14">MAY</span>
 read and write stream data out of order subject to flow control
 limits.  See section 2.2 in <span>[<a href="#QUIC" class="cite xref">QUIC</a>]</span>.<a href="#section-5.3-4" class="pilcrow">¶</a></p>
 </section>
@@ -2721,9 +2727,9 @@ these parameters to appear in Setup messages.<a href="#section-6.1.1-1" class="p
 <a href="#section-6.1.1.1" class="section-number selfRef">6.1.1.1. </a><a href="#name-authorization-info" class="section-name selfRef">AUTHORIZATION INFO</a>
             </h5>
 <p id="section-6.1.1.1-1">AUTHORIZATION INFO parameter (Parameter Type 0x02) identifies a track's
-authorization information in a SUBSCRIBE, SUBSCRIBE_ANNOUNCES or ANNOUNCE
-message. This parameter is populated for cases where the authorization is
-required at the track level. The value is an ASCII string.<a href="#section-6.1.1.1-1" class="pilcrow">¶</a></p>
+authorization information in a SUBSCRIBE, SUBSCRIBE_ANNOUNCES, ANNOUNCE
+or FETCH message. This parameter is populated for cases where the authorization
+is required at the track level. The value is an ASCII string.<a href="#section-6.1.1.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="delivery-timeout">
@@ -2750,7 +2756,7 @@ their Group Order and Priority.  If a subscriber exceeds the publisher's
 resource limits by failing to consume objects at a sufficient rate, the
 publisher <span class="bcp14">MAY</span> terminate the subscription with error 'Too Far Behind'.<a href="#section-6.1.1.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.1.1.2-4">If an object in a subgroup exceeds the delivery timeout, the publisher <span class="bcp14">MUST</span>
-reset the underlying transport stream (see <a href="#closing-subgroup-streams" class="auto internal xref">Section 7.3.2</a>).<a href="#section-6.1.1.2-4" class="pilcrow">¶</a></p>
+reset the underlying transport stream (see <a href="#closing-subgroup-streams" class="auto internal xref">Section 7.4.2</a>).<a href="#section-6.1.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-6.1.1.2-5">When sent by a subscriber, this parameter is intended to be specific to a
 subscription, so it <span class="bcp14">SHOULD NOT</span> be forwarded upstream by a relay that intends
 to serve multiple subscriptions for the same track.<a href="#section-6.1.1.2-5" class="pilcrow">¶</a></p>
@@ -2783,11 +2789,11 @@ a relay that handles a subscription that includes those Objects re-requests them
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-client_setup-and-server_set" class="section-name selfRef">CLIENT_SETUP and SERVER_SETUP</a>
         </h3>
 <p id="section-6.2-1">The <code>CLIENT_SETUP</code> and <code>SERVER_SETUP</code> messages are the first messages exchanged
-by the client and the server; they allows the peers to establish the mutually
+by the client and the server; they allow the endpoints to establish the mutually
 supported version and agree on the initial configuration before any objects are
 exchanged. It is a sequence of key-value pairs called Setup parameters; the
 semantics and format of which can vary based on whether the client or server is
-sending.  To ensure future extensibility of MOQT, the peers <span class="bcp14">MUST</span> ignore unknown
+sending.  To ensure future extensibility of MOQT, endpoints <span class="bcp14">MUST</span> ignore unknown
 setup parameters. TODO: describe GREASE for those.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.2-2">The wire format of the Setup messages are as follows:<a href="#section-6.2-2" class="pilcrow">¶</a></p>
 <span id="name-moqt-setup-messages"></span><div id="moq-transport-setup-format">
@@ -3117,8 +3123,7 @@ See <a href="#priorities" class="auto internal xref">Section 4</a>.<a href="#sec
 <p id="section-6.6-1">A subscriber issues a <code>UNSUBSCRIBE</code> message to a publisher indicating it is no
 longer interested in receiving media for the specified track and Objects
 should stop being sent as soon as possible.  The publisher sends a
-SUBSCRIBE_DONE to acknowledge the unsubscribe was successful and indicate
-the final Object.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
+SUBSCRIBE_DONE to acknowledge the unsubscribe was successful.<a href="#section-6.6-1" class="pilcrow">¶</a></p>
 <p id="section-6.6-2">The format of <code>UNSUBSCRIBE</code> is as follows:<a href="#section-6.6-2" class="pilcrow">¶</a></p>
 <span id="name-moqt-unsubscribe-message"></span><div id="moq-transport-unsubscribe-format">
 <figure id="figure-7">
@@ -3717,23 +3722,47 @@ FETCH_ERROR
 <a href="#section-6.19" class="section-number selfRef">6.19. </a><a href="#name-subscribe_done" class="section-name selfRef">SUBSCRIBE_DONE</a>
         </h3>
 <p id="section-6.19-1">A publisher sends a <code>SUBSCRIBE_DONE</code> message to indicate it is done publishing
-Objects for that subscription.  The Status Code indicates why the subscription ended,
-and whether it was an error.<a href="#section-6.19-1" class="pilcrow">¶</a></p>
-<p id="section-6.19-2">The format of <code>SUBSCRIBE_DONE</code> is as follows:<a href="#section-6.19-2" class="pilcrow">¶</a></p>
+Objects for that subscription.  The Status Code indicates why the subscription
+ended, and whether it was an error. Because SUBSCRIBE_DONE is sent on the
+control stream, it is likely to arrive at the receiver before late-arriving
+objects, and often even late-opening streams. However, the receiver uses it
+as an indication that it should receive any late-opening streams in a relatively
+short time.<a href="#section-6.19-1" class="pilcrow">¶</a></p>
+<p id="section-6.19-2">Note that some objects in the subscribed track might never be delivered,
+because a stream was reset, or never opened in the first place, due to the
+delivery timeout.<a href="#section-6.19-2" class="pilcrow">¶</a></p>
+<p id="section-6.19-3">A sender <span class="bcp14">MUST NOT</span> send SUBSCRIBE_DONE until it has closed all streams it will
+ever open, and has no further datagrams to send, for a subscription. After
+sending SUBSCRIBE_DONE, the sender can immediately destroy subscription state,
+although stream state can persist until delivery completes. The sender might
+persist subscription state to enforce the delivery timeout by resetting streams
+on which it has already sent FIN, only deleting it when all such streams have
+received ACK of the FIN.<a href="#section-6.19-3" class="pilcrow">¶</a></p>
+<p id="section-6.19-4">A sender <span class="bcp14">MUST NOT</span> destroy subscription state until it sends SUBSCRIBE_DONE,
+though it can choose to stop sending objects (and thus send SUBSCRIBE_DONE) for
+any reason.<a href="#section-6.19-4" class="pilcrow">¶</a></p>
+<p id="section-6.19-5">A subscriber that receives SUBSCRIBE_DONE <span class="bcp14">SHOULD</span> set a timer of at least its
+delivery timeout in case some objects are still inbound due to prioritization
+or packet loss. The subscriber <span class="bcp14">MAY</span> dispense with a timer if it sent UNSUBSCRIBE
+or is otherwise no longer interested in objects from the track. Once the timer
+has expired, the receiver destroys subscription state once all open streams for
+the subscription have closed. A subscriber <span class="bcp14">MAY</span> discard subscription state
+earlier, at the cost of potentially not delivering some late objects to the
+application. The subscriber <span class="bcp14">SHOULD</span> send STOP_SENDING on all streams related to
+the subscription when it deletes subscription state.<a href="#section-6.19-5" class="pilcrow">¶</a></p>
+<p id="section-6.19-6">The format of <code>SUBSCRIBE_DONE</code> is as follows:<a href="#section-6.19-6" class="pilcrow">¶</a></p>
 <span id="name-moqt-subscribe_done-message"></span><div id="moq-transport-subscribe-fin-format">
 <figure id="figure-20">
-          <div class="alignLeft art-text artwork" id="section-6.19-3.1">
+          <div class="alignLeft art-text artwork" id="section-6.19-7.1">
 <pre>
 SUBSCRIBE_DONE Message {
   Type (i) = 0xB,
   Length (i),
   Subscribe ID (i),
   Status Code (i),
+  Stream Count (i),
   Reason Phrase Length (i),
   Reason Phrase (..),
-  ContentExists (8),
-  [Final Group (i)],
-  [Final Object (i)],
 }
 </pre>
 </div>
@@ -3742,28 +3771,19 @@ SUBSCRIBE_DONE Message {
           </figcaption></figure>
 </div>
 <ul class="normal">
-<li class="normal" id="section-6.19-4.1">
-            <p id="section-6.19-4.1.1">Subscribe ID: Subscription identifier as defined in <a href="#message-subscribe-req" class="auto internal xref">Section 6.4</a>.<a href="#section-6.19-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-6.19-8.1">
+            <p id="section-6.19-8.1.1">Subscribe ID: Subscription identifier as defined in <a href="#message-subscribe-req" class="auto internal xref">Section 6.4</a>.<a href="#section-6.19-8.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.19-4.2">
-            <p id="section-6.19-4.2.1">Status Code: An integer status code indicating why the subscription ended.<a href="#section-6.19-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.19-8.2">
+            <p id="section-6.19-8.2.1">Status Code: An integer status code indicating why the subscription ended.<a href="#section-6.19-8.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.19-4.3">
-            <p id="section-6.19-4.3.1">Reason Phrase: Provides the reason for subscription error.<a href="#section-6.19-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.19-8.3">
+            <p id="section-6.19-8.3.1">Stream Count: An integer indicating the number of data streams the publisher
+opened for this subscription.  The subscriber can remove all subscription state
+once the same number of streams have been processed.<a href="#section-6.19-8.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-6.19-4.4">
-            <p id="section-6.19-4.4.1">ContentExists: 1 if an object has been published for this subscription, 0 if
-not. If 0, then the Final Group and Final Object fields will not be present.
-Any other value is a protocol error and <span class="bcp14">MUST</span> terminate the session with a
-Protocol Violation (<a href="#session-termination" class="auto internal xref">Section 3.5</a>).<a href="#section-6.19-4.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.19-4.5">
-            <p id="section-6.19-4.5.1">Final Group: The largest Group ID sent by the publisher in an OBJECT
-message in this track.<a href="#section-6.19-4.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-6.19-4.6">
-            <p id="section-6.19-4.6.1">Final Object: The largest Object ID sent by the publisher in an OBJECT
-message in the <code>Final Group</code> for this track.<a href="#section-6.19-4.6.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-6.19-8.4">
+            <p id="section-6.19-8.4.1">Reason Phrase: Provides the reason for subscription error.<a href="#section-6.19-8.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -4040,14 +4060,35 @@ failure.<a href="#section-6.26-3.2.1" class="pilcrow">¶</a></p>
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-data-streams" class="section-name selfRef">Data Streams</a>
       </h2>
 <p id="section-7-1">A publisher sends Objects matching a subscription on Data Streams.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">All unidirectional MOQT streams, as well as all datagrams, start with a
-variable-length integer indicating the type of the stream in question.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-2">All unidirectional MOQT streams start with a variable-length integer indicating
+the type of the stream in question.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <table class="center" id="table-5">
         <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
 <thead>
           <tr>
             <th class="text-right" rowspan="1" colspan="1">ID</th>
-            <th class="text-left" rowspan="1" colspan="1">Stream Type</th>
+            <th class="text-left" rowspan="1" colspan="1">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right" rowspan="1" colspan="1">0x4</td>
+            <td class="text-left" rowspan="1" colspan="1">STREAM_HEADER_SUBGROUP  (<a href="#stream-header-subgroup" class="auto internal xref">Section 7.4.1</a>)</td>
+          </tr>
+          <tr>
+            <td class="text-right" rowspan="1" colspan="1">0x5</td>
+            <td class="text-left" rowspan="1" colspan="1">FETCH_HEADER  (<a href="#fetch-header" class="auto internal xref">Section 7.4.3</a>)</td>
+          </tr>
+        </tbody>
+      </table>
+<p id="section-7-4">All MOQT datagrams start with a variable-length integer indicating the type of
+the datagram.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<table class="center" id="table-6">
+        <caption><a href="#table-6" class="selfRef">Table 6</a></caption>
+<thead>
+          <tr>
+            <th class="text-right" rowspan="1" colspan="1">ID</th>
+            <th class="text-left" rowspan="1" colspan="1">Type</th>
           </tr>
         </thead>
         <tbody>
@@ -4056,20 +4097,17 @@ variable-length integer indicating the type of the stream in question.<a href="#
             <td class="text-left" rowspan="1" colspan="1">OBJECT_DATAGRAM (<a href="#object-datagram" class="auto internal xref">Section 7.2</a>)</td>
           </tr>
           <tr>
-            <td class="text-right" rowspan="1" colspan="1">0x4</td>
-            <td class="text-left" rowspan="1" colspan="1">STREAM_HEADER_SUBGROUP  (<a href="#stream-header-subgroup" class="auto internal xref">Section 7.3.1</a>)</td>
-          </tr>
-          <tr>
-            <td class="text-right" rowspan="1" colspan="1">0x5</td>
-            <td class="text-left" rowspan="1" colspan="1">FETCH_HEADER  (<a href="#fetch-header" class="auto internal xref">Section 7.3.3</a>)</td>
+            <td class="text-right" rowspan="1" colspan="1">0x2</td>
+            <td class="text-left" rowspan="1" colspan="1">OBJECT_DATAGRAM_STATUS (<a href="#object-datagram" class="auto internal xref">Section 7.2</a>)</td>
           </tr>
         </tbody>
       </table>
-<p id="section-7-4">An endpoint that receives an unknown stream type <span class="bcp14">MUST</span> close the session.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">Every Track has a single 'Object Forwarding Preference' and the Original
+<p id="section-7-6">An endpoint that receives an unknown stream or datagram type <span class="bcp14">MUST</span> close the
+session.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-7">Every Track has a single 'Object Forwarding Preference' and the Original
 Publisher <span class="bcp14">MUST NOT</span> mix different forwarding preferences within a single track.
 If a subscriber receives different forwarding preferences for a track, it
-<span class="bcp14">SHOULD</span> close the session with an error of 'Protocol Violation'.<a href="#section-7-5" class="pilcrow">¶</a></p>
+<span class="bcp14">SHOULD</span> close the session with an error of 'Protocol Violation'.<a href="#section-7-7" class="pilcrow">¶</a></p>
 <div id="message-object">
 <section id="section-7.1">
         <h3 id="name-object-headers">
@@ -4185,8 +4223,6 @@ OBJECT_DATAGRAM Message {
   Group ID (i),
   Object ID (i),
   Publisher Priority (8),
-  Object Payload Length (i),
-  [Object Status (i)],
   Object Payload (..),
 }
 </pre>
@@ -4195,31 +4231,59 @@ OBJECT_DATAGRAM Message {
 <a href="#name-moqt-object_datagram-messag" class="selfRef">MOQT OBJECT_DATAGRAM Message</a>
           </figcaption></figure>
 </div>
+<p id="section-7.2-4">There is no explicit length field.  The entirety of the transport datagram
+following Publisher Priority contains the Object Payload.<a href="#section-7.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="object-datagram-status">
+<section id="section-7.3">
+        <h3 id="name-object-datagram-status-mess">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-object-datagram-status-mess" class="section-name selfRef">Object Datagram Status Message</a>
+        </h3>
+<p id="section-7.3-1">An <code>OBJECT_DATAGRAM_STATUS</code> message is similar to OBEJCT_DATAGRAM except it
+conveys an Object Status and has no payload.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<span id="name-moqt-object_datagram_status"></span><div id="object-datagram-status-format">
+<figure id="figure-29">
+          <div class="alignLeft art-text artwork" id="section-7.3-2.1">
+<pre>
+OBJECT_DATAGRAM_STATUS Message {
+  Track Alias (i),
+  Group ID (i),
+  Object ID (i),
+  Publisher Priority (8),
+  Object Status (i),
+}
+</pre>
+</div>
+<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
+<a href="#name-moqt-object_datagram_status" class="selfRef">MOQT OBJECT_DATAGRAM_STATUS Message</a>
+          </figcaption></figure>
+</div>
 </section>
 </div>
 <div id="streams">
-<section id="section-7.3">
+<section id="section-7.4">
         <h3 id="name-streams">
-<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-streams" class="section-name selfRef">Streams</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-streams" class="section-name selfRef">Streams</a>
         </h3>
-<p id="section-7.3-1">When objects are sent on streams, the stream begins with a stream header
+<p id="section-7.4-1">When objects are sent on streams, the stream begins with a stream header
 message and is followed by one or more sets of serialized object fields.
 If a stream ends gracefully in the middle of a serialized Object, terminate the
-session with a Protocol Violation.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">A publisher <span class="bcp14">SHOULD NOT</span> open more than one stream at a time with the same stream
-header message type and fields.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
-<p id="section-7.3-3">TODO: figure out how a relay closes these streams<a href="#section-7.3-3" class="pilcrow">¶</a></p>
+session with a Protocol Violation.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-2">A publisher <span class="bcp14">SHOULD NOT</span> open more than one stream at a time with the same stream
+header message type and fields.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
+<p id="section-7.4-3">TODO: figure out how a relay closes these streams<a href="#section-7.4-3" class="pilcrow">¶</a></p>
 <div id="stream-header-subgroup">
-<section id="section-7.3.1">
+<section id="section-7.4.1">
           <h4 id="name-stream-header-subgroup">
-<a href="#section-7.3.1" class="section-number selfRef">7.3.1. </a><a href="#name-stream-header-subgroup" class="section-name selfRef">Stream Header Subgroup</a>
+<a href="#section-7.4.1" class="section-number selfRef">7.4.1. </a><a href="#name-stream-header-subgroup" class="section-name selfRef">Stream Header Subgroup</a>
           </h4>
-<p id="section-7.3.1-1">When a stream begins with <code>STREAM_HEADER_SUBGROUP</code>, all objects on the stream
+<p id="section-7.4.1-1">When a stream begins with <code>STREAM_HEADER_SUBGROUP</code>, all objects on the stream
 belong to the track requested in the Subscribe message identified by <code>Track Alias</code>
-and the subgroup indicated by 'Group ID' and <code>Subgroup ID</code>.<a href="#section-7.3.1-1" class="pilcrow">¶</a></p>
+and the subgroup indicated by 'Group ID' and <code>Subgroup ID</code>.<a href="#section-7.4.1-1" class="pilcrow">¶</a></p>
 <span id="name-moqt-stream_header_subgroup"></span><div id="stream-header-subgroup-format">
-<figure id="figure-29">
-            <div class="alignLeft art-text artwork" id="section-7.3.1-2.1">
+<figure id="figure-30">
+            <div class="alignLeft art-text artwork" id="section-7.4.1-2.1">
 <pre>
 STREAM_HEADER_SUBGROUP Message {
   Track Alias (i),
@@ -4229,20 +4293,20 @@ STREAM_HEADER_SUBGROUP Message {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-29" class="selfRef">Figure 29</a>:
+<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
 <a href="#name-moqt-stream_header_subgroup" class="selfRef">MOQT STREAM_HEADER_SUBGROUP Message</a>
             </figcaption></figure>
 </div>
-<p id="section-7.3.1-3">All Objects received on a stream opened with <code>STREAM_HEADER_SUBGROUP</code> have an
-<code>Object Forwarding Preference</code> = <code>Subgroup</code>.<a href="#section-7.3.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.3.1-4">To send an Object with <code>Object Forwarding Preference</code> = <code>Subgroup</code>, find the open
+<p id="section-7.4.1-3">All Objects received on a stream opened with <code>STREAM_HEADER_SUBGROUP</code> have an
+<code>Object Forwarding Preference</code> = <code>Subgroup</code>.<a href="#section-7.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-4">To send an Object with <code>Object Forwarding Preference</code> = <code>Subgroup</code>, find the open
 stream that is associated with the subscription, <code>Group ID</code> and <code>Subgroup ID</code>,
 or open a new one and send the <code>STREAM_HEADER_SUBGROUP</code>. Then serialize the
-following fields.<a href="#section-7.3.1-4" class="pilcrow">¶</a></p>
-<p id="section-7.3.1-5">The Object Status field is only sent if the Object Payload Length is zero.<a href="#section-7.3.1-5" class="pilcrow">¶</a></p>
+following fields.<a href="#section-7.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-5">The Object Status field is only sent if the Object Payload Length is zero.<a href="#section-7.4.1-5" class="pilcrow">¶</a></p>
 <span id="name-moqt-group-stream-object-fi"></span><div id="object-group-format">
-<figure id="figure-30">
-            <div class="alignLeft art-text artwork" id="section-7.3.1-6.1">
+<figure id="figure-31">
+            <div class="alignLeft art-text artwork" id="section-7.4.1-6.1">
 <pre>
 {
   Object ID (i),
@@ -4252,98 +4316,103 @@ following fields.<a href="#section-7.3.1-4" class="pilcrow">¶</a></p>
 }
 </pre>
 </div>
-<figcaption><a href="#figure-30" class="selfRef">Figure 30</a>:
+<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
 <a href="#name-moqt-group-stream-object-fi" class="selfRef">MOQT Group Stream Object Fields</a>
             </figcaption></figure>
 </div>
-<p id="section-7.3.1-7">A publisher <span class="bcp14">MUST NOT</span> send an Object on a stream if its Object ID is less than a
-previously sent Object ID within a given group in that stream.<a href="#section-7.3.1-7" class="pilcrow">¶</a></p>
+<p id="section-7.4.1-7">A publisher <span class="bcp14">MUST NOT</span> send an Object on a stream if its Object ID is less than a
+previously sent Object ID within a given group in that stream.<a href="#section-7.4.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="closing-subgroup-streams">
-<section id="section-7.3.2">
+<section id="section-7.4.2">
           <h4 id="name-closing-subgroup-streams">
-<a href="#section-7.3.2" class="section-number selfRef">7.3.2. </a><a href="#name-closing-subgroup-streams" class="section-name selfRef">Closing Subgroup Streams</a>
+<a href="#section-7.4.2" class="section-number selfRef">7.4.2. </a><a href="#name-closing-subgroup-streams" class="section-name selfRef">Closing Subgroup Streams</a>
           </h4>
-<p id="section-7.3.2-1">Subscribers will often need to know if they have received all objects in a
+<p id="section-7.4.2-1">Subscribers will often need to know if they have received all objects in a
 Subgroup, particularly if they serve as a relay or cache. QUIC and Webtransport
 streams provide signals that can be used for this purpose. Closing Subgroups
 promptly frees system resources and often unlocks flow control credit to open
-more streams.<a href="#section-7.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-2">If a sender has delivered all objects in a Subgroup to the QUIC stream, except
+more streams.<a href="#section-7.4.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-2">If a sender has delivered all objects in a Subgroup to the QUIC stream, except
 any objects before the beginning of a subscription, it <span class="bcp14">MUST</span> close the
-stream with a FIN.<a href="#section-7.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-3">If a sender closes the stream before delivering all such objects to the QUIC
+stream with a FIN.<a href="#section-7.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-3">If a sender closes the stream before delivering all such objects to the QUIC
 stream, it <span class="bcp14">MUST</span> use a RESET_STREAM or RESET_STREAM_AT
 <span>[<a href="#I-D.draft-ietf-quic-reliable-stream-reset" class="cite xref">I-D.draft-ietf-quic-reliable-stream-reset</a>]</span> frame. This includes an open
 Subgroup exceeding its Delivery Timeout, early termination of subscription due to
 an UNSUBSCRIBE message, a publisher's decision to end the subscription early, or a
 SUBSCRIBE_UPDATE moving the end of the subscription to before the current Group
-or the start after the current Group.<a href="#section-7.3.2-3" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-4">A sender might send all objects in a Subgroup and the FIN on a QUIC stream,
+or the start after the current Group.  When RESET_STREAM_AT is used, the
+reliable_size <span class="bcp14">SHOULD</span> include the stream header so the receiver can identify the
+corresponding subscription and accurately account for reset data streams when
+handling SUBSCRIBE_DONE (see <a href="#message-subscribe-done" class="auto internal xref">Section 6.19</a>).  Publishers that reset
+data streams without using RESET_STREAM_AT with an appropriate reliable_size can
+cause subscribers to hold on to subscription state until a timeout expires.<a href="#section-7.4.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-4">A sender might send all objects in a Subgroup and the FIN on a QUIC stream,
 and then reset the stream. In this case, the receiving application would receive
 the FIN if and only if all objects were received. If the application receives
-all data on the stream and the FIN, it can ignore any RESET_STREAM it receives.<a href="#section-7.3.2-4" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-5">If a sender will not deliver any objects from a Subgroup, it <span class="bcp14">MAY</span> send
+all data on the stream and the FIN, it can ignore any RESET_STREAM it receives.<a href="#section-7.4.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-5">If a sender will not deliver any objects from a Subgroup, it <span class="bcp14">MAY</span> send
 a STREAM_HEADER_SUBGROUP on a new stream, with no objects, and
 then send RESET_STREAM_AT with a reliable_size equal to the length of the
-stream header. This explicitly tells the receiver there is an unsent Subgroup.<a href="#section-7.3.2-5" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-6">Since SUBSCRIBEs always end on a group boundary, an ending subscription can
+stream header. This explicitly tells the receiver there is an unsent Subgroup.<a href="#section-7.4.2-5" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-6">Since SUBSCRIBEs always end on a group boundary, an ending subscription can
 always cleanly close all its subgroups. A sender that terminates a stream
 early for any other reason (e.g., to handoff to a different sender) <span class="bcp14">MUST</span>
 use RESET_STREAM or RESET_STREAM_AT. Senders <span class="bcp14">SHOULD</span> terminate a stream on
-Group boundaries to avoid doing so.<a href="#section-7.3.2-6" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-7">An MoQT implementation that processes a stream FIN is assured it has received
+Group boundaries to avoid doing so.<a href="#section-7.4.2-6" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-7">An MoQT implementation that processes a stream FIN is assured it has received
 all objects in a subgroup from the start of the subscription. If a relay, it
 can forward stream FINs to its own subscribers once those objects have been
 sent. A relay <span class="bcp14">MAY</span> treat receipt of EndOfGroup, GroupDoesNotExist, or
 EndOfTrack objects as a signal to close corresponding streams even if the FIN
-has not arrived, as further objects on the stream would be a protocol violation.<a href="#section-7.3.2-7" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-8">Similarly, an EndOfGroup message indicates the maximum Object ID in the
+has not arrived, as further objects on the stream would be a protocol violation.<a href="#section-7.4.2-7" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-8">Similarly, an EndOfGroup message indicates the maximum Object ID in the
 Group, so if all Objects in the Group have been received, a FIN can be sent on
 any stream where the entire subgroup has been sent. This might be complex to
-implement.<a href="#section-7.3.2-8" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-9">Processing a RESET_STREAM or RESET_STREAM_AT means that there might be other
+implement.<a href="#section-7.4.2-8" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-9">Processing a RESET_STREAM or RESET_STREAM_AT means that there might be other
 objects in the Subgroup beyond the last one received. A relay might immediately
 reset the corresponding downstream stream, or it might attempt to recover the
 missing Objects in an effort send all the objects in the subgroups and the FIN. It also
 might send RESET_STREAM_AT with reliable_size set to the last object it has, so
 as to reliably deliver the objects it has while signaling that other objects
-might exist.<a href="#section-7.3.2-9" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-10">A subscriber <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
+might exist.<a href="#section-7.4.2-9" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-10">A subscriber <span class="bcp14">MAY</span> send a QUIC STOP_SENDING frame for a subgroup stream if the Group
 or Subgroup is no longer of interest to it. The publisher <span class="bcp14">SHOULD</span> respond with
 RESET_STREAM or RESET_STREAM_AT. If RESET_STREAM_AT is sent, note that the receiver
 has indicated no interest in the objects, so setting a reliable_size beyond the
-stream header is of questionable utility.<a href="#section-7.3.2-10" class="pilcrow">¶</a></p>
-<p id="section-7.3.2-11">RESET_STREAM and STOP_SENDING on SUBSCRIBE data streams have no impact on other
+stream header is of questionable utility.<a href="#section-7.4.2-10" class="pilcrow">¶</a></p>
+<p id="section-7.4.2-11">RESET_STREAM and STOP_SENDING on SUBSCRIBE data streams have no impact on other
 Subgroups in the Group or the subscription, although applications might cancel all
-Subgroups in a Group at once.<a href="#section-7.3.2-11" class="pilcrow">¶</a></p>
+Subgroups in a Group at once.<a href="#section-7.4.2-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fetch-header">
-<section id="section-7.3.3">
+<section id="section-7.4.3">
           <h4 id="name-fetch-header">
-<a href="#section-7.3.3" class="section-number selfRef">7.3.3. </a><a href="#name-fetch-header" class="section-name selfRef">Fetch Header</a>
+<a href="#section-7.4.3" class="section-number selfRef">7.4.3. </a><a href="#name-fetch-header" class="section-name selfRef">Fetch Header</a>
           </h4>
-<p id="section-7.3.3-1">When a stream begins with <code>FETCH_HEADER</code>, all objects on the stream belong to the
-track requested in the Fetch message identified by <code>Subscribe ID</code>.<a href="#section-7.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.4.3-1">When a stream begins with <code>FETCH_HEADER</code>, all objects on the stream belong to the
+track requested in the Fetch message identified by <code>Subscribe ID</code>.<a href="#section-7.4.3-1" class="pilcrow">¶</a></p>
 <span id="name-moqt-fetch_header-message"></span><div id="fetch-header-format">
-<figure id="figure-31">
-            <div class="alignLeft art-text artwork" id="section-7.3.3-2.1">
+<figure id="figure-32">
+            <div class="alignLeft art-text artwork" id="section-7.4.3-2.1">
 <pre>
 FETCH_HEADER Message {
   Subscribe ID (i),
 }
 </pre>
 </div>
-<figcaption><a href="#figure-31" class="selfRef">Figure 31</a>:
+<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
 <a href="#name-moqt-fetch_header-message" class="selfRef">MOQT FETCH_HEADER Message</a>
             </figcaption></figure>
 </div>
-<p id="section-7.3.3-3">Each object sent on a fetch stream after the FETCH_HEADER has the following format:<a href="#section-7.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-7.4.3-3">Each object sent on a fetch stream after the FETCH_HEADER has the following format:<a href="#section-7.4.3-3" class="pilcrow">¶</a></p>
 <span id="name-moqt-fetch-object-fields"></span><div id="object-fetch-format">
-<figure id="figure-32">
-            <div class="alignLeft art-text artwork" id="section-7.3.3-4.1">
+<figure id="figure-33">
+            <div class="alignLeft art-text artwork" id="section-7.4.3-4.1">
 <pre>
 {
   Group ID (i),
@@ -4356,24 +4425,24 @@ FETCH_HEADER Message {
 }
 </pre>
 </div>
-<figcaption><a href="#figure-32" class="selfRef">Figure 32</a>:
+<figcaption><a href="#figure-33" class="selfRef">Figure 33</a>:
 <a href="#name-moqt-fetch-object-fields" class="selfRef">MOQT Fetch Object Fields</a>
             </figcaption></figure>
 </div>
-<p id="section-7.3.3-5">The Object Status field is only sent if the Object Payload Length is zero.<a href="#section-7.3.3-5" class="pilcrow">¶</a></p>
-<p id="section-7.3.3-6">The Subgroup ID field of an object with a Forwarding Preference of "Datagram"
-(see <a href="#object-fields" class="auto internal xref">Section 7.1.1</a>) is set to the Object ID.<a href="#section-7.3.3-6" class="pilcrow">¶</a></p>
+<p id="section-7.4.3-5">The Object Status field is only sent if the Object Payload Length is zero.<a href="#section-7.4.3-5" class="pilcrow">¶</a></p>
+<p id="section-7.4.3-6">The Subgroup ID field of an object with a Forwarding Preference of "Datagram"
+(see <a href="#object-fields" class="auto internal xref">Section 7.1.1</a>) is set to the Object ID.<a href="#section-7.4.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="examples">
-<section id="section-7.4">
+<section id="section-7.5">
         <h3 id="name-examples">
-<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
         </h3>
-<p id="section-7.4-1">Sending a track on one stream:<a href="#section-7.4-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.4-2">
+<p id="section-7.5-1">Sending a track on one stream:<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.5-2">
 <pre>
 STREAM_HEADER_TRACK {
   Track Alias = 1
@@ -4391,10 +4460,10 @@ STREAM_HEADER_TRACK {
   Object Payload Length = 4
   Payload = "efgh"
 }
-</pre><a href="#section-7.4-2" class="pilcrow">¶</a>
+</pre><a href="#section-7.5-2" class="pilcrow">¶</a>
 </div>
-<p id="section-7.4-3">Sending a subgroup on one stream:<a href="#section-7.4-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.4-4">
+<p id="section-7.5-3">Sending a subgroup on one stream:<a href="#section-7.5-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.5-4">
 <pre>
 Stream = 2
 
@@ -4414,7 +4483,7 @@ STREAM_HEADER_SUBGROUP {
   Object Payload Length = 4
   Payload = "efgh"
 }
-</pre><a href="#section-7.4-4" class="pilcrow">¶</a>
+</pre><a href="#section-7.5-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
