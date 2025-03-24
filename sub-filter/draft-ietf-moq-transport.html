@@ -3076,10 +3076,10 @@ a Location greater than the Largest Group ID and Latest Object ID fields in the
 SUBSCRIBE_OK will be delivered by the publisher. This is most useful where the
 Group ID implies a temporal relationship.<a href="#section-8.6-7" class="pilcrow">¶</a></p>
 <p id="section-8.6-8">All Objects (0x6): All objects that arrive via upstream SUBSCRIBE at, or are
-created by, the publisher after the object indicated by the Largest Group ID and
-Largest Object ID fields in the SUBSCRIBE_OK, whether or not the Location is
-higher.  This is most useful for tracks where the Group ID does not imply a
-temporal relationship.<a href="#section-8.6-8" class="pilcrow">¶</a></p>
+created by, the publisher after processing the SUBSCRIBE, whether or not the
+Location is higher than the highest observed when the SUBSCRIBE is processed.
+This is most useful for tracks where the Group ID does not imply a temporal
+relationship.<a href="#section-8.6-8" class="pilcrow">¶</a></p>
 <p id="section-8.6-9">A filter type other than the above <span class="bcp14">MUST</span> be treated as error.<a href="#section-8.6-9" class="pilcrow">¶</a></p>
 <p id="section-8.6-10">If a subscriber wants to subscribe to Objects that precede the Higher Objects
 filter, it can send a SUBSCRIBE for Higher Objects followed by a FETCH.
