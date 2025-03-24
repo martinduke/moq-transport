@@ -1468,7 +1468,7 @@ Table of Contents
    AbsoluteStart (0x3): Specifies an open-ended subscription beginning
    from the object identified in the StartGroup and StartObject fields.
    If the StartGroup is prior to the current group, the subscription
-   starts at the beginning of the current object like the 'Highest
+   starts at the beginning of the current object like the 'Higher
    Objects' filter.
 
    AbsoluteRange (0x4): Specifies a closed subscription starting at
