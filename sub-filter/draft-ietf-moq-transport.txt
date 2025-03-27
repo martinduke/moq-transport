@@ -5,13 +5,13 @@
 Media Over QUIC                                                L. Curley
 Internet-Draft                                                   Discord
 Intended status: Standards Track                                K. Pugin
-Expires: 25 September 2025                                          Meta
+Expires: 28 September 2025                                          Meta
                                                            S. Nandakumar
                                                                    Cisco
                                                              V. Vasiliev
                                                            I. Swett, Ed.
                                                                   Google
-                                                           24 March 2025
+                                                           27 March 2025
 
 
                        Media over QUIC Transport
@@ -59,7 +59,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 September 2025.
+   This Internet-Draft will expire on 28 September 2025.
 
 Copyright Notice
 
@@ -1481,14 +1481,12 @@ Table of Contents
    Higher Objects (0x5): Specifies an open-ended subscription.  All
    objects with a Location greater than the Largest Group ID and Latest
    Object ID fields in the SUBSCRIBE_OK will be delivered by the
-   publisher.  This is most useful where the Group ID implies a temporal
-   relationship.
+   publisher.
 
    All Objects (0x6): All objects that arrive via upstream SUBSCRIBE at,
    or are created by, the publisher after processing the SUBSCRIBE,
    whether or not the Location is higher than the highest observed when
-   the SUBSCRIBE is processed.  This is most useful for tracks where the
-   Group ID does not imply a temporal relationship.
+   the SUBSCRIBE is processed.
 
    A filter type other than the above MUST be treated as error.
 
