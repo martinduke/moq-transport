@@ -5,11 +5,11 @@
 Media Over QUIC                                            S. Nandakumar
 Internet-Draft                                                     Cisco
 Intended status: Standards Track                             V. Vasiliev
-Expires: 14 February 2026                                  I. Swett, Ed.
+Expires: 28 February 2026                                  I. Swett, Ed.
                                                                   Google
                                                         A. Frindell, Ed.
                                                                     Meta
-                                                          13 August 2025
+                                                          27 August 2025
 
 
                        Media over QUIC Transport
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 February 2026.
+   This Internet-Draft will expire on 28 February 2026.
 
 Copyright Notice
 
@@ -1007,12 +1007,26 @@ Table of Contents
    authorization can be accomplished by the client sending
    SUBSCRIBE_NAMESPACE, or conveyed in other mechanisms out of band.
 
+   An endpoint MAY SUBSCRIBE to a Track it is publishing, though only
+   Relays are required to handle such a SUBSCRIBE.  Such self-
+   subscriptions are identical to subscriptions initiated by other
+   endpoints, and all published Objects will be forwarded back to the
+   endpoint, subject to priority and congestion response rules.
+
    A publisher MUST send exactly one SUBSCRIBE_OK or SUBSCRIBE_ERROR in
    response to a SUBSCRIBE.  It MUST send exactly one FETCH_OK or
    FETCH_ERROR in response to a FETCH.  A subscriber MUST send exactly
    one PUBLISH_OK or PUBLISH_ERROR in response to a PUBLISH.  The peer
    SHOULD close the session with a protocol error if it receives more
    than one.
+
+   Publishers MAY start sending Objects on PUBLISH-initiated
+   subscriptions before receiving a PUBLISH_OK response to reduce
+   latency.  Doing so can consume unnecessary resources in cases where
+   the Subscriber rejects the subscription with PUBLISH_ERROR or sets
+   Forward State=0 in PUBLISH_OK.  It can also result in the Subscriber
+   dropping Objects if its buffering limits are exceeded (see
+   Section 10.3 and Section 10.4.2).
 
    A subscriber keeps subscription state until it sends UNSUBSCRIBE, or
    after receipt of a PUBLISH_DONE or SUBSCRIBE_ERROR.  Note that
@@ -1067,7 +1081,10 @@ Table of Contents
    SUBSCRIBE_NAMESPACE to publishers/relays it has established a session
    with.  The recipient of this message will send any relevant
    PUBLISH_NAMESPACE, PUBLISH_NAMESPACE_DONE or PUBLISH messages for
-   that namespace, or more specific part of that namespace.
+   that namespace, or more specific part of that namespace.  This
+   includes echoing back PUBLISH or PUBLISH_NAMESPACE messages to the
+   endpoint that sent them.  If an endpoint accepts its own PUBLISH,
+   this behaves as self-subscription described in Section 5.1.
 
    A publisher MUST send exactly one SUBSCRIBE_NAMESPACE_OK or
    SUBSCRIBE_NAMESPACE_ERROR in response to a SUBSCRIBE_NAMESPACE.  The
@@ -1098,11 +1115,6 @@ Table of Contents
    subscriber that has subscribed via SUBSCRIBE_NAMESPACE for that
    namespace, or a prefix of that namespace.  A publisher MAY send the
    PUBLISH_NAMESPACE to any other subscriber.
-
-   An endpoint SHOULD NOT, however, send a PUBLISH_NAMESPACE advertising
-   a namespace that exactly matches a namespace for which the peer sent
-   an earlier PUBLISH_NAMESPACE (i.e. a PUBLISH_NAMESPACE ought not to
-   be echoed back to its sender).
 
    An endpoint SHOULD report the reception of a PUBLISH_NAMESPACE_OK or
    PUBLISH_NAMESPACE_ERROR to the application to inform the search for
@@ -1351,6 +1363,14 @@ Table of Contents
    downstream subscribers with disparate filters subscribe and
    unsubscribe from a track.
 
+   A subscriber remains subscribed to a Track at a Relay until it
+   unsubscribes, the upstream publisher terminates the subscription, or
+   the subscription expires (see Section 9.8).  A subscription with a
+   filter can reach a state where all possible Objects matching the
+   filter have been delivered to the subscriber.  Since tracking this
+   can be prohibitively expensive, Relays are not required or expected
+   to do so.
+
 8.2.1.  Graceful Subscriber Relay Switchover
 
    This section describes behavior a subscriber MAY implement to allow
@@ -1410,6 +1430,11 @@ Table of Contents
 
    Relays MUST forward SUBSCRIBE messages to all matching publishers and
    PUBLISH_NAMESPACE or PUBLISH messages to all matching subscribers.
+
+   When a Relay needs to make an upstream FETCH request, it determines
+   the available publishers using the same matching rules as SUBSCRIBE.
+   When more than one publisher is available, the Relay MAY send the
+   FETCH to any of them.
 
    When a relay receives an incoming SUBSCRIBE that triggers an upstream
    subscription, it SHOULD send a SUBSCRIBE request to each publisher
@@ -1781,10 +1806,7 @@ Table of Contents
    If both the subscriber and publisher specify the parameter, they use
    the min of the two values for the subscription.  The publisher SHOULD
    always specify the value received from an upstream subscription when
-   there is one, and nothing otherwise.  If an Object with a smaller ID
-   arrives later than subsequent Objects, relays can consider its
-   receipt time as that of the Object with the next larger Location,
-   with the assumption that the Objects were reordered.
+   there is one, and nothing otherwise.
 
    Publishers can, at their discretion, discontinue forwarding Objects
    earlier than the negotiated DELIVERY TIMEOUT, subject to stream
@@ -1956,6 +1978,14 @@ Table of Contents
    on the MAX_AUTH_TOKEN_CACHE_SIZE parameter in SERVER_SETUP (or the
    default value of 0).
 
+9.3.2.6.  MOQT IMPLEMENTATION
+
+   The MOQT_IMPLEMENTATION parameter (Parameter Type 0x05) identifies
+   the name and version of the sender's MOQT implementation.  This
+   SHOULD be a UTF-8 encoded string [RFC3629], though the message does
+   not carry information, such as language tags, that would aid
+   comprehension by any entity other than the one that created the text.
+
 9.4.  GOAWAY
 
    An endpoint sends a GOAWAY message to inform the peer it intends to
@@ -1986,7 +2016,7 @@ Table of Contents
       client can connect to continue this session.  The client MUST use
       this URI for the new session if provided.  If the URI is zero
       bytes long, the current URI is reused instead.  The new session
-      URI SHOULD use the same scheme as the current URL to ensure
+      URI SHOULD use the same scheme as the current URI to ensure
       compatibility.  The maxmimum length of the New Session URI is
       8,192 bytes.  If an endpoint receives a length exceeding the
       maximum, it MUST close the session with a PROTOCOL_VIOLATION.
@@ -2021,8 +2051,8 @@ Table of Contents
    MAX_REQUEST_ID is similar to MAX_STREAMS in ([RFC9000], Section 4.6),
    and similar considerations apply when deciding how often to send
    MAX_REQUEST_ID.  For example, implementations might choose to
-   increase MAX_REQUEST_ID as subscriptions close to keep the number of
-   subscriptions available roughly consistent.
+   increase MAX_REQUEST_ID as subscriptions are closed to keep the
+   number of available subscriptions roughly consistent.
 
 9.6.  REQUESTS_BLOCKED
 
@@ -2172,8 +2202,8 @@ Table of Contents
    *  Start Location: The starting location for this subscriptions.
       Only present for "AbsoluteStart" and "AbsoluteRange" filter types.
 
-   *  End Group: The end Group ID, inclusive.  Only present for the
-      "AbsoluteRange" filter type.
+   *  End Group: The end Group ID.  Only present for the "AbsoluteRange"
+      filter type.
 
    *  Parameters: The parameters are defined in Section 9.2.1.
 
@@ -2544,6 +2574,11 @@ Table of Contents
 
    *  Parameters: The parameters are defined in Section 9.2.1.
 
+   A subscriber receiving a PUBLISH for a Track it does not wish to
+   receive SHOULD send PUBLISH_ERROR with error code UNINTERESTED, and
+   abandon reading any publisher initiated streams associated with that
+   subscription using a STOP_SENDING frame.
+
 9.14.  PUBLISH_OK
 
    The subscriber sends a PUBLISH_OK control message to acknowledge the
@@ -2744,8 +2779,8 @@ Table of Contents
 
    *  Start Location: The start Location.
 
-   *  End Location: The end Location, plus 1 Object ID.  An Object ID
-      value of 0 means the entire group is requested.
+   *  End Location: The end Location, plus 1.  A Location.Object value
+      of 0 means the entire group is requested.
 
    Fields present only for Relative Fetch (0x2) and Absolute Fetch
    (0x3):
@@ -2850,13 +2885,14 @@ Table of Contents
       -  Otherwise, End Location is Fetch.End Location
 
       If the relay is subscribed to the track, it uses its knowledge of
-      the largest {Group, Object} to set End Location.  If if is not
+      the largest {Group, Object} to set End Location.  If it is not
       subscribed and the requested End Location exceeds its cached data,
       the relay makes an upstream request to complete the FETCH, and
       uses the upstream response to set End Location.
 
-      If End is smaller than the Start Location in the corresponding
-      FETCH the receiver MUST close the session with PROTOCOL_VIOLATION
+      If End Location is smaller than the Start Location in the
+      corresponding FETCH the receiver MUST close the session with
+      PROTOCOL_VIOLATION.
 
    *  Parameters: The parameters are defined in Section 9.2.1.
 
@@ -3294,13 +3330,6 @@ Table of Contents
    An endpoint that receives an unknown stream or datagram type MUST
    close the session.
 
-   The publisher only sends Objects after receiving a SUBSCRIBE or
-   FETCH.  The publisher MUST NOT send Objects that are not requested.
-   If an endpoint receives an Object it never requested, it SHOULD
-   terminate the session with a protocol violation.  Objects can arrive
-   after a subscription or fetch has been cancelled, so the session MUST
-   NOT be teriminated in that case.
-
    Every Track has a single 'Object Forwarding Preference' and the
    Original Publisher MUST NOT mix different forwarding preferences
    within a single track (see Section 2.5).
@@ -3310,7 +3339,12 @@ Table of Contents
    To optimize wire efficiency, Subgroups and Datagrams refer to a track
    by a numeric identifier, rather than the Full Track Name.  Track
    Alias is chosen by the publisher and included in SUBSCRIBE_OK
-   (Section 9.8 or PUBLISH (Section 9.13).
+   (Section 9.8) or PUBLISH (Section 9.13).
+
+   Objects can arrive after a subscription has been cancelled.
+   Subscribers SHOULD retain sufficient state to quickly discard these
+   unwanted Objects, rather than treating them as belonging to an
+   unknown Track Alias.
 
 10.2.  Objects
 
@@ -3370,7 +3404,7 @@ Table of Contents
       Object does not exist at any publisher and it will not be
       published in the future.  This SHOULD be cached.
 
-   *  0x3 := Indicates End of Group.  Object ID is one greater that the
+   *  0x3 := Indicates End of Group.  Object ID is one greater than the
       largest Object produced in the Group identified by the Group ID.
       If the Object ID is 0, it indicates there are no Objects in this
       Group.  This SHOULD be cached.  A publisher MAY use an end of
@@ -3387,9 +3421,9 @@ Table of Contents
       Publishers MUST NOT publish an Object with a Location larger than
       this Location (see Section 2.5).  This SHOULD be cached.
 
-   Any other value SHOULD be treated as a protocol error and terminate
-   the session with a PROTOCOL_VIOLATION (Section 3.4).  Any object with
-   a status code other than zero MUST have an empty payload.
+   Any other value SHOULD be treated as a protocol error and the session
+   SHOULD be terminated with a PROTOCOL_VIOLATION (Section 3.4).  Any
+   object with a status code other than zero MUST have an empty payload.
 
 10.2.1.2.  Object Extension Header
 
@@ -3496,8 +3530,9 @@ Table of Contents
    For Type values where Extensions Present is No, Extensions Headers
    Length is not present and the Object has no extensions.  When
    Extensions Present is Yes, Extension Headers Length is present.  If
-   an endpoint receives a datagram with Type 0x01 and Extension Headers
-   Length is 0, it MUST close the session with PROTOCOL_VIOLATION.
+   an endpoint receives a datagram with Extensions Present and Extension
+   Headers Length is 0, it MUST close the session with
+   PROTOCOL_VIOLATION.
 
    For Type values where Object ID Present is No, the Object ID field is
    omitted and the Object ID is 0.  When Object ID Present is Yes, the
@@ -3540,15 +3575,16 @@ Table of Contents
 
    The LSB of the type determines if the Extensions Headers Length and
    Extension headers are present.  If an endpoint receives a datagram
-   with Type 0x05 and Extension Headers Length is 0, it MUST close the
-   session with PROTOCOL_VIOLATION.
+   with Extensions Present and Extension Headers Length is 0, it MUST
+   close the session with PROTOCOL_VIOLATION.
 
 10.4.  Streams
 
-   When objects are sent on streams, the stream begins with a Subgroup
-   Header and is followed by one or more sets of serialized object
-   fields.  If a stream ends gracefully in the middle of a serialized
-   Object, the session SHOULD be terminated with a PROTOCOL_VIOLATION.
+   When Objects are sent on streams, the stream begins with a Subgroup
+   or Fetch Header and is followed by one or more sets of serialized
+   Object fields.  If a stream ends gracefully (i.e., the stream
+   terminates with a FIN) in the middle of a serialized Object, the
+   session SHOULD be terminated with a PROTOCOL_VIOLATION.
 
    A publisher SHOULD NOT open more than one stream at a time with the
    same Subgroup Header field values.
@@ -3716,12 +3752,18 @@ Table of Contents
    A relay MUST NOT forward an Object on an existing Subgroup stream
    unless it is the next Object in that Subgroup.  A relay knows that an
    Object is the next Object in the Subgroup if at least one of the
-   following is true: * the Object ID is one greater than the previous
-   Object sent on this Subgroup stream.  * the Object was received on
-   the same upstream Subgroup stream as the previously sent Object on
-   the downstream Subgroup stream, with no other Objects in between.  *
-   it knows all Object IDs between the current and previous Object IDs
-   on the Subgroup stream belong to different Subgroups or do not exist.
+   following is true:
+
+   *  the Object ID is one greater than the previous Object sent on this
+      Subgroup stream.
+
+   *  the Object was received on the same upstream Subgroup stream as
+      the previously sent Object on the downstream Subgroup stream, with
+      no other Objects in between.
+
+   *  it knows all Object IDs between the current and previous Object
+      IDs on the Subgroup stream belong to different Subgroups or do not
+      exist.
 
    If the relay does not know if an Object is the next Object, it MUST
    reset the Subgroup stream and open a new one to forward it.
@@ -3750,11 +3792,11 @@ Table of Contents
    Processing a RESET_STREAM or RESET_STREAM_AT means that there might
    be other objects in the Subgroup beyond the last one received.  A
    relay might immediately reset the corresponding downstream stream, or
-   it might attempt to recover the missing Objects in an effort send all
-   the objects in the subgroups and the FIN.  It also might send
-   RESET_STREAM_AT with reliable_size set to the last object it has, so
-   as to reliably deliver the objects it has while signaling that other
-   objects might exist.
+   it might attempt to recover the missing Objects in an effort to send
+   all the Objects in the subgroups and the FIN.  It also might send
+   RESET_STREAM_AT with reliable_size set to the last Object it has, so
+   as to reliably deliver the Objects it has while signaling that other
+   Objects might exist.
 
    A subscriber MAY send a QUIC STOP_SENDING frame for a subgroup stream
    if the Group or Subgroup is no longer of interest to it.  The
@@ -3887,8 +3929,8 @@ Table of Contents
    example, if the Original Publisher is publishing an Object in Group 7
    and knows it will never publish any Objects in Group 8 or Group 9, it
    can include Prior Group ID Gap = 2 in any number of Objects in Group
-   10, as it sees fit.  A Track is considered malformed (see Section 2.5
-   if any of the following conditions are detected:
+   10, as it sees fit.  A Track is considered malformed (see
+   Section 2.5) if any of the following conditions are detected:
 
    *  An Object contains more than one instance of Prior Group ID Gap
 
@@ -3920,7 +3962,7 @@ Table of Contents
    example, if the Original Publisher is publishing Object 10 in Group 3
    and knows it will never publish Objects 8 or 9 in this Group, it can
    include Prior Object ID Gap = 2.  A Track is considered malformed
-   (see Section 2.5 if any of the following conditions are detected:
+   (see Section 2.5) if any of the following conditions are detected:
 
    *  An Object contains more than one instance of Prior Object ID Gap
 
@@ -3993,6 +4035,9 @@ Table of Contents
    would have to continue to send PUBLISH_NAMESPACE/
    PUBLISH_NAMESPACE_DONE messages to the entity that had sent the
    SUBSCRIBE_NAMESPACE.
+
+   TODO: Security/Privacy Considerations of MOQT_IMPLEMENTATION
+   parameter
 
 13.  IANA Considerations
 
