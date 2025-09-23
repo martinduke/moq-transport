@@ -2700,7 +2700,7 @@ incurring additional latency.<a href="#section-5.1-6" class="pilcrow">¶</a></p>
 <p id="section-5.1-7">Publishers <span class="bcp14">MAY</span> start sending Objects on PUBLISH-initiated subscriptions before
 receiving a PUBLISH_OK response to reduce latency.  Doing so can consume
 unnecessary resources in cases where the Subscriber rejects the subscription
-with PUBLISH_ERROR or sets Forward State=0 in PUBLISH_OK. It can also result in
+with REQUEST_ERROR or sets Forward State=0 in PUBLISH_OK. It can also result in
 the Subscriber dropping Objects if its buffering limits are exceeded (see
 <a href="#datagrams" class="auto internal xref">Section 10.3</a> and <a href="#subgroup-header" class="auto internal xref">Section 10.4.2</a>).<a href="#section-5.1-7" class="pilcrow">¶</a></p>
 <div id="subscription-state-management">
@@ -3073,8 +3073,8 @@ messages for the same Track from multiple publishers.  The following sections
 explain how Relays maintain subscriptions to all available publishers for a
 given Track.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 <p id="section-8.3-2">There is no specified limit to the number of publishers of a Track Namespace or
-Track.  An implementation can use mechanisms such as PUBLISH_ERROR,
-PUBLISH_NAMESPACE_ERROR, UNSUBSCRIBE or PUBLISH_NAMESPACE_CANCEL if it cannot
+Track.  An implementation can use mechanisms such as REQUEST_ERROR,
+UNSUBSCRIBE or PUBLISH_NAMESPACE_CANCEL if it cannot
 accept an additional publisher due to implementation constraints.
 Implementations can consider the establishment or idle time of the session or
 subscription to determine which publisher to reject or disconnect.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
@@ -4432,7 +4432,7 @@ publisher will start transmitting objects immediately, even before PUBLISH_OK.<a
 </li>
         </ul>
 <p id="section-9.12-4">A subscriber receiving a PUBLISH for a Track it does not wish to receive <span class="bcp14">SHOULD</span>
-send PUBLISH_ERROR with error code <code>UNINTERESTED</code>, and abandon reading any
+send REQUEST_ERROR with error code <code>UNINTERESTED</code>, and abandon reading any
 publisher initiated streams associated with that subscription using a
 STOP_SENDING frame.<a href="#section-9.12-4" class="pilcrow">¶</a></p>
 </section>
@@ -5190,7 +5190,7 @@ the corresponding PUBLISH_NAMESPACE or PUBLISH_NAMESPACE_DONE message.<a href="#
 session.  Within a session, if a publisher receives a SUBSCRIBE_NAMESPACE with a
 Track Namespace Prefix that is a prefix of, suffix of, or equal to an active
 SUBSCRIBE_NAMESPACE, it <span class="bcp14">MUST</span> respond with REQUEST_ERROR, with error code
-<code>NAMESPACE_PREFIX_OVERLAP</code>.<a href="#section-9.24-5" class="pilcrow">¶</a></p>
+<code>PREFIX_OVERLAP</code>.<a href="#section-9.24-5" class="pilcrow">¶</a></p>
 <p id="section-9.24-6">The publisher <span class="bcp14">MUST</span> ensure the subscriber is authorized to perform this
 namespace subscription.<a href="#section-9.24-6" class="pilcrow">¶</a></p>
 <p id="section-9.24-7">SUBSCRIBE_NAMESPACE is not required for a publisher to send PUBLISH_NAMESPACE,
