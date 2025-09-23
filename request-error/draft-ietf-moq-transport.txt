@@ -2219,9 +2219,8 @@ Table of Contents
    INVALID_RANGE (0x11):  In response to SUBSCRIBE or FETCH, specified
       Filter or range of Locations cannot be satisfied.
 
-   MALFORMED_TRACK (0x12):  In response to a SUBSCRIBE, FETCH, or
-      TRACK_STATUS, a relay publisher detected the track was malformed
-      (see Section 2.4.2).
+   MALFORMED_TRACK (0x12):  In response to a FETCH, a relay publisher
+      detected the track was malformed (see Section 2.4.2).
 
    The following are errors for use by the subscriber.  They can appear
    in response to PUBLISH or PUBLISH_NAMESPACE, unless otherwise noted.
