@@ -1055,7 +1055,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Nandakumar, et al.</td>
-<td class="center">Expires 27 April 2026</td>
+<td class="center">Expires 2 May 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-moq-transport-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-24" class="published">24 October 2025</time>
+<time datetime="2025-10-29" class="published">29 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-27">27 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-05-02">2 May 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1142,7 +1142,7 @@ networks and is designed for high scale and low latency distribution.<a href="#s
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 May 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -4243,7 +4243,8 @@ use a non-retryable error code indicating a new authentication token is needed.<
 <span class="break"></span><dl class="dlParallel" id="section-9.8-8">
           <dt id="section-9.8-8.1">INTERNAL_ERROR:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-8.2">
-            <p id="section-9.8-8.2.1">An implementation specific or generic error occurred.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.8-8.2.1">An implementation specific or generic error occurred. This might be retryable
+or not, depending on the codepoint.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-8.3">UNAUTHORIZED:</dt>
@@ -4281,13 +4282,15 @@ SUBSCRIBE, FETCH, TRACK_STATUS, and SUBSCRIBE_NAMESPACE, unless otherwise noted.
 <span class="break"></span><dl class="dlParallel" id="section-9.8-10">
           <dt id="section-9.8-10.1">DOES_NOT_EXIST:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-10.2">
-            <p id="section-9.8-10.2.1">The track or namespace is not available at the publisher.<a href="#section-9.8-10.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.8-10.2.1">The track or namespace is not available at the publisher. This might be
+retryable or not, if the target might exist later.<a href="#section-9.8-10.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-10.3">INVALID_RANGE:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-10.4">
             <p id="section-9.8-10.4.1">In response to SUBSCRIBE or FETCH, specified Filter or range of Locations
-cannot be satisfied.<a href="#section-9.8-10.4.1" class="pilcrow">¶</a></p>
+cannot be satisfied. This might be retryable if the range is expected to have
+objects in the future.<a href="#section-9.8-10.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-10.5">MALFORMED_TRACK:</dt>
@@ -4302,7 +4305,8 @@ to PUBLISH or PUBLISH_NAMESPACE, unless otherwise noted.<a href="#section-9.8-11
 <span class="break"></span><dl class="dlParallel" id="section-9.8-12">
           <dt id="section-9.8-12.1">UNINTERESTED:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-12.2">
-            <p id="section-9.8-12.2.1">The subscriber is not interested in the track or namespace.<a href="#section-9.8-12.2.1" class="pilcrow">¶</a></p>
+            <p id="section-9.8-12.2.1">The subscriber is not interested in the track or namespace. This might be
+retryable if it expects to be interested later.<a href="#section-9.8-12.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 </dl>
@@ -7044,6 +7048,13 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
             <tbody>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">INTERNAL_ERROR</td>
+                <td class="text-center" rowspan="1" colspan="1">0x0</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">INTERNAL_ERROR</td>
                 <td class="text-center" rowspan="1" colspan="1">0x1</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
@@ -7064,7 +7075,7 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">NOT_SUPPORTED</td>
+                <td class="text-left" rowspan="1" colspan="1">INVALID_RANGE</td>
                 <td class="text-center" rowspan="1" colspan="1">0x4</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
@@ -7078,7 +7089,7 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">MALFORMED_AUTH_TOKEN</td>
+                <td class="text-left" rowspan="1" colspan="1">NOT_SUPPORTED</td>
                 <td class="text-center" rowspan="1" colspan="1">0x6</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
@@ -7092,7 +7103,7 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">EXPIRED_AUTH_TOKEN</td>
+                <td class="text-left" rowspan="1" colspan="1">MALFORMED_AUTH_TOKEN</td>
                 <td class="text-center" rowspan="1" colspan="1">0x8</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
@@ -7113,29 +7124,51 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">DOES_NOT_EXIST</td>
+                <td class="text-left" rowspan="1" colspan="1">UNINTERESTED</td>
                 <td class="text-center" rowspan="1" colspan="1">0xb</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">PREFIX_OVERLAP</td>
+                <td class="text-left" rowspan="1" colspan="1">DOES_NOT_EXIST</td>
                 <td class="text-center" rowspan="1" colspan="1">0xc</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">INVALID_JOINING_REQUEST_ID</td>
+                <td class="text-left" rowspan="1" colspan="1">DOES_NOT_EXIST</td>
+                <td class="text-center" rowspan="1" colspan="1">0xd</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">EXPIRED_AUTH_TOKEN</td>
                 <td class="text-center" rowspan="1" colspan="1">0xe</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PREFIX_OVERLAP</td>
+                <td class="text-center" rowspan="1" colspan="1">0x10</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">INVALID_JOINING_REQUEST_ID</td>
+                <td class="text-center" rowspan="1" colspan="1">0x12</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
             </tbody>
           </table>
-<p id="section-13.3.2-2">As noted above, odd error codes are potentially retryable.<a href="#section-13.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-13.3.2-2">As noted above, odd error codes are potentially retryable. Some codes
+have both retryable and non-retryable versions.<a href="#section-13.3.2-2" class="pilcrow">¶</a></p>
 <p id="section-13.3.2-3">The range of error codes including 0x100 to 0xffff is reserved for
 implementation-speceific codes.<a href="#section-13.3.2-3" class="pilcrow">¶</a></p>
 <p id="section-13.3.2-4">The range of error codes starting with 0x10000 is reserved for

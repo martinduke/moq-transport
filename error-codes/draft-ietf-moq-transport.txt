@@ -5,11 +5,11 @@
 Media Over QUIC                                            S. Nandakumar
 Internet-Draft                                                     Cisco
 Intended status: Standards Track                             V. Vasiliev
-Expires: 27 April 2026                                     I. Swett, Ed.
+Expires: 2 May 2026                                        I. Swett, Ed.
                                                                   Google
                                                         A. Frindell, Ed.
                                                                     Meta
-                                                         24 October 2025
+                                                         29 October 2025
 
 
                        Media over QUIC Transport
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 April 2026.
+   This Internet-Draft will expire on 2 May 2026.
 
 Copyright Notice
 
@@ -2444,7 +2444,8 @@ Table of Contents
    indicating a new authentication token is needed.
 
    INTERNAL_ERROR:  An implementation specific or generic error
-      occurred.
+      occurred.  This might be retryable or not, depending on the
+      codepoint.
 
    UNAUTHORIZED:  The subscriber is not authorized to perform the
       requested action on the given track.
@@ -2466,10 +2467,12 @@ Table of Contents
    unless otherwise noted.
 
    DOES_NOT_EXIST:  The track or namespace is not available at the
-      publisher.
+      publisher.  This might be retryable or not, if the target might
+      exist later.
 
    INVALID_RANGE:  In response to SUBSCRIBE or FETCH, specified Filter
-      or range of Locations cannot be satisfied.
+      or range of Locations cannot be satisfied.  This might be
+      retryable if the range is expected to have objects in the future.
 
    MALFORMED_TRACK:  In response to a FETCH, a relay publisher detected
       the track was malformed (see Section 2.4.2).
@@ -2478,7 +2481,8 @@ Table of Contents
    in response to PUBLISH or PUBLISH_NAMESPACE, unless otherwise noted.
 
    UNINTERESTED:  The subscriber is not interested in the track or
-      namespace.
+      namespace.  This might be retryable if it expects to be interested
+      later.
 
    Errors below can only be used in response to one message type.
 
@@ -4303,36 +4307,45 @@ EXT 1 and EXT N can be modified or removed by Relays
            +============================+======+===============+
            | Name                       | Code | Specification |
            +============================+======+===============+
+           | INTERNAL_ERROR             | 0x0  | Section 9.8   |
+           +----------------------------+------+---------------+
            | INTERNAL_ERROR             | 0x1  | Section 9.8   |
            +----------------------------+------+---------------+
            | UNAUTHORIZED               | 0x2  | Section 9.8   |
            +----------------------------+------+---------------+
            | TIMEOUT                    | 0x3  | Section 9.8   |
            +----------------------------+------+---------------+
-           | NOT_SUPPORTED              | 0x4  | Section 9.8   |
+           | INVALID_RANGE              | 0x4  | Section 9.8   |
            +----------------------------+------+---------------+
            | INVALID_RANGE              | 0x5  | Section 9.8   |
            +----------------------------+------+---------------+
-           | MALFORMED_AUTH_TOKEN       | 0x6  | Section 9.8   |
+           | NOT_SUPPORTED              | 0x6  | Section 9.8   |
            +----------------------------+------+---------------+
            | UNKNOWN_STATUS_IN_RANGE    | 0x7  | Section 9.8   |
            +----------------------------+------+---------------+
-           | EXPIRED_AUTH_TOKEN         | 0x8  | Section 9.8   |
+           | MALFORMED_AUTH_TOKEN       | 0x8  | Section 9.8   |
            +----------------------------+------+---------------+
            | MALFORMED_TRACK            | 0x9  | Section 9.8   |
            +----------------------------+------+---------------+
            | UNINTERESTED               | 0xa  | Section 9.8   |
            +----------------------------+------+---------------+
-           | DOES_NOT_EXIST             | 0xb  | Section 9.8   |
+           | UNINTERESTED               | 0xb  | Section 9.8   |
            +----------------------------+------+---------------+
-           | PREFIX_OVERLAP             | 0xc  | Section 9.8   |
+           | DOES_NOT_EXIST             | 0xc  | Section 9.8   |
            +----------------------------+------+---------------+
-           | INVALID_JOINING_REQUEST_ID | 0xe  | Section 9.8   |
+           | DOES_NOT_EXIST             | 0xd  | Section 9.8   |
+           +----------------------------+------+---------------+
+           | EXPIRED_AUTH_TOKEN         | 0xe  | Section 9.8   |
+           +----------------------------+------+---------------+
+           | PREFIX_OVERLAP             | 0x10 | Section 9.8   |
+           +----------------------------+------+---------------+
+           | INVALID_JOINING_REQUEST_ID | 0x12 | Section 9.8   |
            +----------------------------+------+---------------+
 
                                   Table 11
 
-   As noted above, odd error codes are potentially retryable.
+   As noted above, odd error codes are potentially retryable.  Some
+   codes have both retryable and non-retryable versions.
 
    The range of error codes including 0x100 to 0xffff is reserved for
    implementation-speceific codes.
