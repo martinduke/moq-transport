@@ -4237,7 +4237,7 @@ message. If it is sending more than one such message within a second or so, it
 over time, minimizing the risk of synchronized retry storms.  The Retry Interval
 <span class="bcp14">MAY</span> be zero if the request can be retried immediately.<a href="#section-9.8-5" class="pilcrow">¶</a></p>
 <p id="section-9.8-6">If the sender has no information as to when a request is likely to be
-successful, it <span class="bcp14">MAY</span> jitter around a default interval of 30 seconds.<a href="#section-9.8-6" class="pilcrow">¶</a></p>
+successful, it <span class="bcp14">MAY</span> apply randomization around a default interval of 30 seconds.<a href="#section-9.8-6" class="pilcrow">¶</a></p>
 <p id="section-9.8-7">If a Retry Interval exceeds the lifetime of a necessary authentication token
 used in the request, so that a retry at that time would fail, the sender <span class="bcp14">SHOULD</span>
 use a non-retryable error code indicating a new authentication token is needed.<a href="#section-9.8-7" class="pilcrow">¶</a></p>
