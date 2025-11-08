@@ -4246,12 +4246,12 @@ sent again, plus one. If the value is 0, the request <span class="bcp14">SHOULD 
 as defined below and assigned in <a href="#iana-request-error" class="auto internal xref">Section 13.3.2</a>. Most codepoints have
 identical meanings for various request types, but some have request-specific
 meanings.<a href="#section-9.8-4" class="pilcrow">¶</a></p>
-<p id="section-9.8-5">If request is retryable with the same parameters at a later time, the sender of
+<p id="section-9.8-5">If a request is retryable with the same parameters at a later time, the sender of
 REQUEST_ERROR includes a non-zero Retry Interval in the message. If it is
 sending more than one such message within a second or so across one or more
 sessions, it <span class="bcp14">SHOULD</span> apply randomization to each retry interval so that retries
-are spread out over time, minimizing the risk of synchronized retry storms.  The
-Retry Interval value <span class="bcp14">MAY</span> be one if the request can be retried immediately.<a href="#section-9.8-5" class="pilcrow">¶</a></p>
+are spread out over time, minimizing the risk of synchronized retry storms.  A
+Retry Interval value of 1 indicates the request can be retried immediately.<a href="#section-9.8-5" class="pilcrow">¶</a></p>
 <p id="section-9.8-6">If the sender has no information as to when a request is likely to be
 successful, it <span class="bcp14">MAY</span> apply randomization around a default interval of 30 seconds.<a href="#section-9.8-6" class="pilcrow">¶</a></p>
 <p id="section-9.8-7">If a Retry Interval exceeds the lifetime of a necessary authentication token
@@ -4261,7 +4261,7 @@ use an error code indicating a new authentication token is needed.<a href="#sect
           <dt id="section-9.8-8.1">INTERNAL_ERROR:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-8.2">
             <p id="section-9.8-8.2.1">An implementation specific or generic error occurred. This might be retryable
-or not, depending on the imlementation conditions that caused the error.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
+or not, depending on the implementation conditions that caused the error.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-8.3">UNAUTHORIZED:</dt>
