@@ -4217,7 +4217,7 @@ REQUEST_ERROR Message {
   Length (16),
   Request ID (i),
   Error Code (i),
-  [Retry Interval (i)],
+  Retry Interval (i),
   Error Reason (Reason Phrase),
 }
 </pre>
@@ -4235,7 +4235,7 @@ REQUEST_ERROR Message {
 </li>
           <li class="normal" id="section-9.8-3.3">
             <p id="section-9.8-3.3.1">Retry Interval: The minimum time (in seconds) before the request <span class="bcp14">SHOULD</span> be
-sent again. Present only if the Error Code is odd.<a href="#section-9.8-3.3.1" class="pilcrow">¶</a></p>
+sent again, plus one. If the value is 0, the request <span class="bcp14">SHOULD NOT</span> be retried.<a href="#section-9.8-3.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-9.8-3.4">
             <p id="section-9.8-3.4.1">Error Reason: Provides a text description of the request error. See
@@ -4246,29 +4246,28 @@ sent again. Present only if the Error Code is odd.<a href="#section-9.8-3.3.1" c
 as defined below and assigned in <a href="#iana-request-error" class="auto internal xref">Section 13.3.2</a>. Most codepoints have
 identical meanings for various request types, but some have request-specific
 meanings.<a href="#section-9.8-4" class="pilcrow">¶</a></p>
-<p id="section-9.8-5">Odd error codes indicate the request is retryable with the same parameters at a
-later time. If so, the sender of REQUEST_ERROR includes a Retry Interval in the
-message. If it is sending more than one such message within a second or so
-across one or more sessions, it <span class="bcp14">SHOULD</span> apply randomization to each retry
-interval so that retries are spread out over time, minimizing the risk of
-synchronized retry storms.  The Retry Interval <span class="bcp14">MAY</span> be zero if the request can be
-retried immediately.<a href="#section-9.8-5" class="pilcrow">¶</a></p>
+<p id="section-9.8-5">If request is retryable with the same parameters at a later time, the sender of
+REQUEST_ERROR includes a non-zero Retry Interval in the message. If it is
+sending more than one such message within a second or so across one or more
+sessions, it <span class="bcp14">SHOULD</span> apply randomization to each retry interval so that retries
+are spread out over time, minimizing the risk of synchronized retry storms.  The
+Retry Interval value <span class="bcp14">MAY</span> be one if the request can be retried immediately.<a href="#section-9.8-5" class="pilcrow">¶</a></p>
 <p id="section-9.8-6">If the sender has no information as to when a request is likely to be
 successful, it <span class="bcp14">MAY</span> apply randomization around a default interval of 30 seconds.<a href="#section-9.8-6" class="pilcrow">¶</a></p>
 <p id="section-9.8-7">If a Retry Interval exceeds the lifetime of a necessary authentication token
 used in the request, so that a retry at that time would fail, the sender <span class="bcp14">SHOULD</span>
-use a non-retryable error code indicating a new authentication token is needed.<a href="#section-9.8-7" class="pilcrow">¶</a></p>
+use an error code indicating a new authentication token is needed.<a href="#section-9.8-7" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-9.8-8">
           <dt id="section-9.8-8.1">INTERNAL_ERROR:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-8.2">
             <p id="section-9.8-8.2.1">An implementation specific or generic error occurred. This might be retryable
-or not, depending on the codepoint.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
+or not, depending on the imlementation conditions that caused the error.<a href="#section-9.8-8.2.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-8.3">UNAUTHORIZED:</dt>
           <dd style="margin-left: 1.5em" id="section-9.8-8.4">
             <p id="section-9.8-8.4.1">The subscriber is not authorized to perform the requested action on the given
-track.<a href="#section-9.8-8.4.1" class="pilcrow">¶</a></p>
+track.  This might be retryable if the authorization token is not yet valid.<a href="#section-9.8-8.4.1" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-9.8-8.5">TIMEOUT:</dt>
@@ -7079,126 +7078,96 @@ List which headers can be repeated in the table.<a href="#section-13-2.5.1" clas
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">INTERNAL_ERROR</td>
+                <td class="text-left" rowspan="1" colspan="1">UNAUTHORIZED</td>
                 <td class="text-center" rowspan="1" colspan="1">0x1</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">UNAUTHORIZED</td>
+                <td class="text-left" rowspan="1" colspan="1">TIMEOUT</td>
                 <td class="text-center" rowspan="1" colspan="1">0x2</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">TIMEOUT</td>
+                <td class="text-left" rowspan="1" colspan="1">NOT_SUPPORTED</td>
                 <td class="text-center" rowspan="1" colspan="1">0x3</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">INVALID_RANGE</td>
+                <td class="text-left" rowspan="1" colspan="1">MALFORMED_AUTH_TOKEN</td>
                 <td class="text-center" rowspan="1" colspan="1">0x4</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">INVALID_RANGE</td>
+                <td class="text-left" rowspan="1" colspan="1">EXPIRED_AUTH_TOKEN</td>
                 <td class="text-center" rowspan="1" colspan="1">0x5</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">NOT_SUPPORTED</td>
-                <td class="text-center" rowspan="1" colspan="1">0x6</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">UNKNOWN_STATUS_IN_RANGE</td>
-                <td class="text-center" rowspan="1" colspan="1">0x7</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">MALFORMED_AUTH_TOKEN</td>
-                <td class="text-center" rowspan="1" colspan="1">0x8</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">MALFORMED_TRACK</td>
-                <td class="text-center" rowspan="1" colspan="1">0x9</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">UNINTERESTED</td>
-                <td class="text-center" rowspan="1" colspan="1">0xa</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">UNINTERESTED</td>
-                <td class="text-center" rowspan="1" colspan="1">0xb</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
                 <td class="text-left" rowspan="1" colspan="1">DOES_NOT_EXIST</td>
-                <td class="text-center" rowspan="1" colspan="1">0xc</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">DOES_NOT_EXIST</td>
-                <td class="text-center" rowspan="1" colspan="1">0xd</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">EXPIRED_AUTH_TOKEN</td>
-                <td class="text-center" rowspan="1" colspan="1">0xe</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">PREFIX_OVERLAP</td>
                 <td class="text-center" rowspan="1" colspan="1">0x10</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
               <tr>
-                <td class="text-left" rowspan="1" colspan="1">INVALID_JOINING_REQUEST_ID</td>
+                <td class="text-left" rowspan="1" colspan="1">INVALID_RANGE</td>
+                <td class="text-center" rowspan="1" colspan="1">0x11</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">MALFORMED_TRACK</td>
                 <td class="text-center" rowspan="1" colspan="1">0x12</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">UNINTERESTED</td>
+                <td class="text-center" rowspan="1" colspan="1">0x20</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">PREFIX_OVERLAP</td>
+                <td class="text-center" rowspan="1" colspan="1">0x30</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">INVALID_JOINING_REQUEST_ID</td>
+                <td class="text-center" rowspan="1" colspan="1">0x32</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">UNKNOWN_STATUS_IN_RANGE</td>
+                <td class="text-center" rowspan="1" colspan="1">0x33</td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <a href="#message-request-error" class="auto internal xref">Section 9.8</a>
 </td>
               </tr>
             </tbody>
           </table>
-<p id="section-13.3.2-2">As noted above, odd error codes are potentially retryable. Some codes
-have both retryable and non-retryable versions.<a href="#section-13.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-13.3.2-3">The range of error codes including 0x100 to 0xffff is reserved for
-implementation-speceific codes.<a href="#section-13.3.2-3" class="pilcrow">¶</a></p>
-<p id="section-13.3.2-4">The range of error codes starting with 0x10000 is reserved for
+<p id="section-13.3.2-2">The range of error codes including 0x100 to 0xffff is reserved for
+implementation-speceific codes.<a href="#section-13.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-13.3.2-3">The range of error codes starting with 0x10000 is reserved for
 provisional error codes that are under consideration for a permanent
-code point by the IETF.<a href="#section-13.3.2-4" class="pilcrow">¶</a></p>
+code point by the IETF.<a href="#section-13.3.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-publish-done">
