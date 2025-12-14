@@ -5,11 +5,11 @@
 Media Over QUIC                                            S. Nandakumar
 Internet-Draft                                                     Cisco
 Intended status: Standards Track                             V. Vasiliev
-Expires: 3 June 2026                                       I. Swett, Ed.
+Expires: 17 June 2026                                      I. Swett, Ed.
                                                                   Google
                                                         A. Frindell, Ed.
                                                                     Meta
-                                                        30 November 2025
+                                                        14 December 2025
 
 
                        Media over QUIC Transport
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 June 2026.
+   This Internet-Draft will expire on 17 June 2026.
 
 Copyright Notice
 
@@ -527,8 +527,8 @@ Table of Contents
    WebTransport implementations offer the ability to control the
    relative scheduling priority of pending stream data.
 
-   Every object within a Group belongs to exactly one Subgroup (but zero
-   if its forwarding preference is Datagram).
+   Every Object within a Group belongs to exactly one Subgroup or
+   Datagram.
 
    When Objects are sent in a subscription (see Section 5.1), Objects
    from two subgroups MUST NOT be sent on the same stream, and Objects
