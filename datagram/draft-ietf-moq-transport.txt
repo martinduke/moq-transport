@@ -5,11 +5,11 @@
 Media Over QUIC                                            S. Nandakumar
 Internet-Draft                                                     Cisco
 Intended status: Standards Track                             V. Vasiliev
-Expires: 7 July 2026                                       I. Swett, Ed.
+Expires: 12 July 2026                                      I. Swett, Ed.
                                                                   Google
                                                         A. Frindell, Ed.
                                                                     Meta
-                                                          3 January 2026
+                                                          8 January 2026
 
 
                        Media over QUIC Transport
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 July 2026.
+   This Internet-Draft will expire on 12 July 2026.
 
 Copyright Notice
 
@@ -3461,10 +3461,8 @@ Table of Contents
    close the session.
 
    Every Object has a 'Object Forwarding Preference' and the Original
-   Publisher MAY mix different forwarding preference within a single
-   track.  As a Subgroup is by definition a set of objects delivered
-   with Subgroup forwarding preference, objects with a Subgroup ID have
-   the same forwarding preference.
+   Publisher MAY use both Subgroups and Datagrams within a Group or
+   Track.
 
 10.1.  Track Alias
 
